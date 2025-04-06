@@ -1,0 +1,88 @@
+{% extends 'automecom/layout.html' %}
+
+{% block main %}
+{% load static %}
+
+
+<div class="containerHome">
+    <div class="introducao">
+        <div class="texto-introducao">
+            <h2>Oficina Auto Mecom</h2>
+            <p>Bem-vindo(a) ao nosso website! Estamos felizes por ter você aqui. Navegue pelas nossas páginas e descubra todos os produtos e serviços que temos a oferecer.</p>
+            <a href="marcacao" class="botao">Marcação</a>
+        </div>
+    </div>
+    <div class="imagem-introducao">
+            <img src="{% static 'automecom/images/dashboard.jpg' %}" alt="Imagem da oficina">
+        </div>
+</div>
+
+
+<div class="slideshow-container">
+  <div class="mySlides fade">
+    <img class="imagem" src="{% static 'automecom/images/foraauto.jpg' %}" alt="imagem1">
+  </div>
+
+  <div class="mySlides fade">
+    <img class="imagem" src="{% static 'automecom/images/equipaauto.jpg' %}" alt="imagem2">
+  </div>
+
+  <div class="mySlides fade">
+    <img class="imagem" src="{% static 'automecom/images/autodentro.JPG' %}" alt="imagem3">
+  </div>
+
+  <div class="mySlides fade">
+    <img class="imagem" src="{% static 'automecom/images/pintura.jpg' %}" alt="imagem3">
+  </div>
+
+
+  <!-- Next and previous buttons -->
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+<br>
+
+    <script>
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>
+
+    <div class="promo">
+        <div>
+            <img class="promoimg" src="{% static 'automecom/images/promolampada.png' %}" alt="imagem4"></a>
+        </div>
+        <div>
+            <img class="promoimg" src="{% static 'automecom/images/promo2.jpg' %}" alt="imagem4">
+        </div>
+    </div>
+
+<div class="comprido">
+            <img class="promoimg" src="{% static 'automecom/images/promo4.jpg' %}" alt="imagem5" width="40%">
+    </div>
+
+{% endblock %}

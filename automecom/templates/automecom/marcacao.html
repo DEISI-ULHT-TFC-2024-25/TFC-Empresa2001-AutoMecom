@@ -1,0 +1,92 @@
+{% extends 'automecom/layout.html' %}
+
+{% block main %}
+{% load static %}
+{% load custom_tags %}
+
+<div class="main-content">
+    <div class="containermarc">
+        <div class="marcacoes-container">
+            <form action="{% url 'automecom:Marcação' %}" method="post">
+                {% csrf_token %}
+
+                <!-- Marcação -->
+                <div class="marcacao">
+                    <h2>Marcação</h2><br>
+
+                    <div class="marcacao-layout">
+                        <!-- Coluna esquerda: Serviço e Descrição -->
+                        <div class="left-column">
+                            <div class="form-group">
+                                <label>{{ form.servicos.label }}</label>
+                                {{ form.servicos }}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.descricao.label }}</label>
+                                {{ form.descricao }}
+                            </div>
+                        </div>
+
+                        <!-- Coluna direita: Data, Hora e Telefone -->
+                        <div class="right-column">
+                            <div class="form-group">
+                                <label>{{ form.data.label }}</label>
+                                {{ form.data }}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.hora.label }}</label>
+                                {{ form.hora }}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.telefone.label }}</label>
+                                {{ form.telefone }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Veículo -->
+                <div class="marcacao">
+                    <br>
+                    <h2>Veículo</h2><br>
+
+                    <div class="marca-modelo-container">
+                        <div class="form-group">
+                            <label>{{ form2.marca.label }}</label>
+                            {{ form2.marca }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ form2.modelo.label }}</label>
+                            {{ form2.modelo }}
+                        </div>
+                    </div>
+
+                    <div class="kms-ano-matricula-container">
+                        <div class="form-group">
+                            <label>{{ form2.kms.label }}</label>
+                            {{ form2.kms }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ form2.matricula.label }}</label>
+                            {{ form2.matricula }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ form2.ano.label }}</label>
+                            {{ form2.ano }}
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <button class="buttonmarc" type="submit">Marcar</button>
+
+            </form>
+        </div>
+            <p style="color:white">  aff </p>
+
+    </div>
+</div>
+{% endblock %}

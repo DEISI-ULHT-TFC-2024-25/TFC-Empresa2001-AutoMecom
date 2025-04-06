@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Mecom | Marcações</title>
+</head>
+
+{% extends 'automecom/layout.html' %}
+{% load custom_tags %}
+
+{% block main %}
+{% load static %}
+
+<body>
+<section class="marcacoesSection">
+
+    {% if marcacoes %}
+        {% for marcacao in marcacoes %}
+            {% if marcacao.estado != "Terminado" %}
+            <div class="Serv{% if user|is_administrador %} administrador{% endif %}">
+                <div>
+                    <br>
+                    {% if user|is_administrador %}
+                    <p><strong>Cliente:</strong> {{marcacao.nome}} {{marcacao.apelido}}</p>
+                    {% for servico in marcacao.servicos.all %}
+                    <p><strong>Serviço(s):</strong> {{ servico.nome }}</p>
+                    {% endfor %}
+                    <p><strong>Data:</strong> {{marcacao.data}}</p>
+                    <p><strong>Hora:</strong> {{marcacao.hora}}h</p>
+                    {% if marcacao.orcamento %}
+                    <p><strong>Orçamento:</strong> <a href="{{ marcacao.orcamento.url }}" target="_blank">Ver Orçamento</a></p>
+                    {% else %}
+                    <p><strong>Orçamento:</strong> Nenhum orçamento associado a esta obra.</p>
+                    {% endif %}
+                    <p><strong>Estado:</strong> {{marcacao.estado}}</p>
+                    {% else %}
+                    <p><strong>Data:</strong> {{marcacao.data}}</p>
+                    <p><strong>Hora:</strong> {{marcacao.hora}}h</p>
+                   {% for servico in marcacao.servicos.all %}
+                      <p><strong>Serviço(s):</strong> {{ servico.nome }}</p>
+                   {% endfor %}
+                    {% if marcacao.orcamento %}
+                    <p><strong>Orçamento:</strong> <a href="{{ marcacao.orcamento.url }}" target="_blank">Ver Orçamento</a></p>
+                    {% else %}
+                    <p><strong>Orçamento:</strong> Nenhum orçamento associado a esta obra.</p>
+                    {% endif %}
+                    <p><strong>Estado:</strong> {{marcacao.estado}}</p>
+                    {% endif %}
+                    <br>
+                </div>
+            </div>
+            {% if user|is_administrador %}
+            <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Editar</a>
+            <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botao">Apagar</a>
+            {% else %}
+            <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Alterar</a>
+            <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botaoCancelar">Cancelar</a>
+            {% endif %}
+            <br>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <!-- Se não houver marcações -->
+        <p class="no-marcacoes">Não há marcações no momento.</p>
+    {% endif %}
+
+</section>
+
+</body>
+</html>
+{% endblock %}

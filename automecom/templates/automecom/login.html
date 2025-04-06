@@ -1,0 +1,46 @@
+{% extends "automecom/layout.html" %}
+{% load static %}
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Mecom | Login</title>
+</head>
+
+{% block main %}
+{% load static %}
+<div class="subblock">
+    <div class="loginblock">
+        <h1 class="textmenu">Ainda não tem conta?</h1><br>
+        <div class="registar">
+            <button class="loginb"><a href="registro">Registar</a></button>
+        </div>
+    </div>
+
+    <div class="loginblockConta">
+        <br>
+        <h1 class="textmenu">Já tem conta?</h1>
+        <br>
+
+        {% if message %}
+            <p> {{ message }} </p>
+        {% endif %}
+
+        <form action="{% url 'automecom:login' %}" method="post">
+            {% csrf_token %}
+            <label>
+                <input type="text" name="username" placeholder="Username">
+            </label><br><br>
+            <label>
+                <input type="password" name="password" placeholder="Password">
+            </label>
+            <br><br><br>
+            <input class="submit" type="submit" value="Login">
+        </form>
+    </div>
+</div>
+
+</html>
+{% endblock main %}

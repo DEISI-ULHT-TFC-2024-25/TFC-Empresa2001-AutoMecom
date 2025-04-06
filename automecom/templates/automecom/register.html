@@ -1,0 +1,27 @@
+
+{% extends 'automecom/layout.html' %}
+
+{% block main %}
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Mecom | Registar</title>
+</head>
+
+<div class="subblock2">
+<div class="loginblock2">
+
+{% block content %}
+
+<form method="POST" novalidate>
+	{% csrf_token %}
+	<h2>Criação de conta</h2><br><br>
+	{{ form.as_p }}
+    <br>
+	<input class="submit" type="submit" value="Criar a minha conta" />
+</form>
+</div>
+</div>
+{% endblock content%}
+{% endblock %}

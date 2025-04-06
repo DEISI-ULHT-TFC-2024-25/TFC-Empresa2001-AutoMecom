@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Mecom | Serviços</title>
+</head>
+
+{% extends 'automecom/layout.html' %}
+{% load custom_tags %}
+
+{% block main %}
+{% load static %}
+<body>
+
+<div class="cabeçalho"></div><br>
+
+<div class="Serviços">
+
+<p style="color: black;" class="BIG">Na Auto Mecom, a nossa equipa presta serviços especializados em manutenção e reparação auto, todos os dias.</p>
+
+<p style="color: black;" class="BIG">Seja qual for o problema do seu veículo, pode sempre contar com a nossa experiência e profissionalismo para o resolvermos.</p>
+
+<br><br>
+<section>
+{% for Servico in servicos %}
+    <div class="Serv" id="servico-{{ Servico.id }}">
+        <div>
+        <h3>{{Servico.nome}}</h3>
+        <p class="SMALL">{{Servico.descricao}}</p>
+        </div>
+    </div>
+     {% if user|is_administrador %}
+    <a href="{% url 'automecom:editar' Servico.id %}" class="botao">Editar</a>
+    <a href="{% url 'automecom:apagar' Servico.id %}" class="botao">Apagar</a>
+    {% endif %}
+    <br>
+    <br>
+{% endfor %}
+</section>
+    {% if administrador %}
+        <p style="text-align: center"><a href="{% url 'automecom:Create' %}" class="botao">+ Adicionar Serviço</a></p>
+    {% endif %}
+    </div>
+</body>
+</html>
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock %}
