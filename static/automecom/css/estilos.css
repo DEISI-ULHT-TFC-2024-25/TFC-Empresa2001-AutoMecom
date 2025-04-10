@@ -1020,6 +1020,8 @@ textarea.form-control {
     min-height: 100px;
 }
 
+
+
 .marca-modelo-container {
         display: flex;
         gap: 15px; /* Espaçamento horizontal entre os campos */
@@ -1201,11 +1203,10 @@ section {
     text-align: center;
 }
 
-/* Estilo para cada marcação */
 .Serv {
     background-color: #ffffff; /* Fundo branco */
     border: 1px solid #ddd;
-    padding: 50px;
+    padding: 80px;
     margin-bottom: 5px;
     border-radius: 10px; /* Bordas arredondadas */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra elegante */
@@ -1217,7 +1218,6 @@ section {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais intensa */
 }
 
-/* Estilo para texto dentro de cada marcação */
 .Serv p {
     font-size: 16px;
     color: #495057; /* Texto cinza escuro */
@@ -1225,14 +1225,12 @@ section {
     margin: 5px 0;
 }
 
-/* Estilo para o nome do cliente */
 .Serv p:first-child {
     font-weight: bold;
     font-size: 18px;
     color: #212529; /* Texto preto */
 }
 
-/* Estilo para os links de orçamento */
 .Serv a {
     color: #007bff; /* Azul */
     text-decoration: none;
@@ -1310,7 +1308,6 @@ section {
          align-items: center;
         padding: 50px;
         max-width: 800px;
-         margin-right: 50%;/* Define uma largura máxima */
          height: 500px;
     }
 
@@ -1347,8 +1344,7 @@ section {
         height: auto;
         border-radius: 8px;
         margin-top:70px;
-        margin-left:30%;
-        margin-right:30%;
+
 
    }
 
@@ -1477,11 +1473,15 @@ section {
 
      }
 
+     .containerHome{
+     margin-left:20%;
+     }
+
       .introducao {
         display: flex;
         justify-content: center;
          align-items: center;
-        margin-left: 60px;
+        margin-left: 70%;
          height: 500px;
          width:400px;
          order: 2;

@@ -148,13 +148,7 @@ def sobre_view(request):
 
 
 def marcacoes_view(request):
-    try:
-        utilizador = Utilizador.objects.get(user=request.user)
-    except Utilizador.DoesNotExist:
-        utilizador = Utilizador.objects.create(user=request.user)
-
-
-
+    utilizador = Utilizador.objects.get(user=request.user)
     context = {
         "marcacoes": Marcacao.objects.filter(utilizador_id=utilizador),
         "estado": Marcacao.estado,
@@ -162,9 +156,7 @@ def marcacoes_view(request):
         "data": Marcacao.data,
         "hora": Marcacao.hora,
     }
-
     if is_administrador(request.user):
-
         context = {
             "marcacoes": Marcacao.objects.all(),
             "estado": Marcacao.estado,
@@ -177,6 +169,7 @@ def marcacoes_view(request):
 
 
 
+
 def register_view(request):
     if request.method == 'GET':
         form = RegisterForm()
@@ -186,20 +179,17 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.username = user.username  # Isso parece redundante
-            user.save()
+            user.save()  # Salvar o usuário primeiro
 
-
-            utilizador = Utilizador(user=user)
+            # Agora salvar o número de telefone no modelo Utilizador
+            telefone = form.cleaned_data['telefone']
+            utilizador = Utilizador(user=user, telefone=telefone)
             utilizador.save()
 
-            login(request, user)  # Faz o login automaticamente após o registro
+            login(request, user)
             return redirect('automecom:Home')
         else:
             return render(request, 'automecom/register.html', {'form': form})
-
-from django.core.exceptions import ObjectDoesNotExist
-
 def perfil_view(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('automecom:login'))
@@ -254,6 +244,7 @@ def marcacao_view(request):
         form2 = VeiculoForm(request.POST)
         if form2.is_valid():
             veiculo = form2.save()
+
             if request.user.is_authenticated:
                 marcacao = Marcacao(
                     nome=request.user.first_name,
@@ -291,6 +282,7 @@ def marcacao_view(request):
 
             return redirect('automecom:marcacoes')
         else:
+            print(form2.errors)
             return render(request, 'automecom/marcacao.html', {'form': form, 'form2': form2})
 
 
@@ -370,20 +362,25 @@ def enviar_email(request):
 def marcacao(request):
     return render(request, 'automecom/marcacao.html')
 
-
 def contact(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             nome = request.user.get_full_name() or request.user.username
             email = request.user.email
+            telemovel = request.POST.get("telemovel", "")
         else:
-            nome = request.POST.get("Pnome", "") + " " + request.POST.get("Unome", "")  # Nome completo do formulário
-            email = request.POST.get("email", "")  # E-mail do formulário
-            telemovel = request.POST.get("telemovel", "")  # Telefone do formulário
+            nome = request.POST.get("Pnome", "") + " " + request.POST.get("Unome", "")
+            email = request.POST.get("email", "")
+            telemovel = request.POST.get("telemovel", "")
 
-        mensagem = request.POST.get("mensagem", "")  # Mensagem do formulário
+        mensagem = request.POST.get("mensagem", "")
 
-        # Construção do corpo do e-mail
+        # Verificação de campos obrigatórios
+        if not nome.strip() or not email.strip() or not mensagem.strip():
+            messages.error(request, "Por favor preencha todos os campos obrigatórios.")
+            return redirect("contact")  # ou render(request, "...", {...}) se quiseres manter os dados
+
+        # Corpo do e-mail
         corpo_email = f"""
         Nome: {nome}
         E-mail: {email}
@@ -393,15 +390,15 @@ def contact(request):
         {mensagem}
         """
 
-        # Enviar o e-mail usando o e-mail fixo (definido como remetente)
+        # Enviar e-mail
         send_mail(
             subject=f"Nova mensagem de {nome}",
             message=corpo_email,
-            from_email="envioemailautomecom@gmail.com",  # E-mail de envio fixo
-            recipient_list=["geral@automecom.com"],  # E-mail da empresa que recebe a mensagem
+            from_email="envioemailautomecom@gmail.com",
+            recipient_list=["geral@automecom.com"],
         )
 
-        # Exibir uma mensagem de sucesso
         messages.success(request, "Sua mensagem foi enviada com sucesso!")
+        return redirect("contact")  # para limpar o formulário após envio
 
     return render(request, "automecom/contact.html")

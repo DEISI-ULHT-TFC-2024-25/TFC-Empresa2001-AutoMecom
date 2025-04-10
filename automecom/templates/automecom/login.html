@@ -1,16 +1,16 @@
-{% extends "automecom/layout.html" %}
-{% load static %}
-{% load custom_tags %}
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Auto Mecom | Login</title>
 </head>
 
-{% block main %}
+{% extends "automecom/layout.html" %}
 {% load static %}
+{% load custom_tags %}
+
+
+{% block main %}
 <div class="subblock">
     <div class="loginblock">
         <h1 class="textmenu">Ainda não tem conta?</h1><br>
@@ -41,6 +41,5 @@
         </form>
     </div>
 </div>
-
-</html>
 {% endblock main %}
+</html>

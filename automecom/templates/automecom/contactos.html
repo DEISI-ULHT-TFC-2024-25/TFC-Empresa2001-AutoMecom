@@ -47,16 +47,28 @@
 
 <div class="container-contacto">
     <h2>Entre em Contato</h2>
+
+    {% if messages %}
+      <div class="mensagens">
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+
+<form method="post">
+
     {% csrf_token %}
 
     {% if request.user.is_authenticated %}
-        <!-- Usuário logado: Apenas mensagem -->
         <div class="mensagem">
             <label for="mensagem">Mensagem:</label>
             <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
         </div>
     {% else %}
-        <!-- Usuário não logado: Pedir todas as informações -->
         <div class="nomesContacto linha">
             <div>
                 <label for="Pnome">Primeiro Nome:</label>
@@ -75,7 +87,7 @@
             </div>
             <div>
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="text" id="email" name="email" required>
             </div>
         </div>
 
@@ -86,7 +98,10 @@
     {% endif %}
 
     <button type="submit">Enviar Mensagem</button>
+            </form>
+
 </div>
+
 
     </div>
 </div>

@@ -44,12 +44,13 @@ class Marcacao(models.Model):
     nome = models.CharField(max_length=200)
     apelido = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    telefone = models.IntegerField()
+    telefone = models.IntegerField( null=True, blank=True)
     servicos = models.ManyToManyField(Servico)
     veiculo = models.OneToOneField(Veiculo, on_delete=models.CASCADE)
     data = models.CharField(max_length=200, default=0)
     hora = models.CharField(max_length=200, default=0)
     descricao = models.TextField(max_length=500)
+    # imagem = models.ImageField(null=True, blank=True)
 
     ESTADOS = [
         ('Por confirmar', 'Por confirmar'),

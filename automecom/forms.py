@@ -22,6 +22,8 @@ class TipoServicoForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
+   # telefone = forms.CharField(max_length=15, required=True, widget=forms.TextInput(attrs={'placeholder': 'Número de Telefone'}))
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
@@ -32,9 +34,9 @@ class RegisterForm(UserCreationForm):
         self.fields['first_name'].widget.attrs['placeholder'] = 'Nome próprio'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Apelido'
         self.fields['email'].widget.attrs['placeholder'] = 'E-mail'
+       # self.fields['telefone'].widget.attrs['placeholder'] = 'Número de Telefone'
         self.fields['password1'].widget.attrs['placeholder'] = 'Palavra passe'
         self.fields['password2'].widget.attrs['placeholder'] = '********'
-
         self.fields['username'].help_text = '150 caracteres ou menos. Somente letras, dígitos e @/./+/-/_.'
         self.fields['password1'].help_text = 'Sua senha deve conter pelo menos 8 caracteres.'
         self.fields['password2'].help_text = 'Digite a mesma senha de antes, para verificação.'
@@ -139,6 +141,11 @@ class MarcacaoForm(forms.Form):
         required=True,
         widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time', 'placeholder': 'Selecione a hora'})
     )
+    # imagem = forms.ImageField(
+      #  required=False,
+      #  widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
+       # label="Imagem (opcional)"
+    #)
 
     def clean_data(self):
         data = self.cleaned_data.get("data")
@@ -152,6 +159,7 @@ class MarcacaoEditForm(forms.ModelForm):
         model = Marcacao
         fields = ['nome', 'apelido', 'email', 'servicos', 'telefone', 'data', 'descricao', 'estado', 'hora',
                   'orcamento', 'observacoes', 'fatura']
+
 
 
 class MarcacaoEditFormClient(forms.ModelForm):
