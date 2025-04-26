@@ -2,13 +2,13 @@
 {% load static %}
 
 
-<!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <title>Auto Mecom </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="{% static 'automecom/css/estilos.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -48,22 +48,22 @@
         <div class="subnav">
             <a class="subnavbtn" href="servicos">SERVIÇOS <i class="fa fa-caret-down"></i></a>
             <div class="subnav-content">
-                <a href="servicos#servico-1">Alinhar a Direção</a>
-                <a href="servicos#servico-2">Inspeção Automóvel</a>
-                <a href="servicos#servico-3">Ar Condicionado Auto</a>
-                <a href="servicos#servico-4">Placas de Matrícula</a>
-                <a href="servicos#servico-5">Pneus</a>
-                <a href="servicos#servico-6">Revisão Automóvel</a>
-                <a href="servicos#servico-7">Travões</a>
-                <a href="servicos#servico-8">Lâmpadas Auto</a>
-                <a href="servicos#servico-9">Baterias Auto</a>
-                <a href="servicos#servico-10">Alternador</a>
-                <a href="servicos#servico-11">Embraiagem</a>
-                <a href="servicos#servico-12">Amortecedoreso</a>
-                <a href="servicos#servico-13">Correia de Distribuição</a>
-                <a href="servicos#servico-14">Escapes</a>
-                <a href="servicos#servico-15">Mudança de Óleo</a>
-                <a href="servicos#servico-16">Diagnóstico</a>
+                <a href="servicos#servico-3">Alinhar a Direção</a>
+                <a href="servicos#servico-4">Inspeção Automóvel</a>
+                <a href="servicos#servico-5">Ar Condicionado Auto</a>
+                <a href="servicos#servico-6">Placas de Matrícula</a>
+                <a href="servicos#servico-7">Pneus</a>
+                <a href="servicos#servico-8">Revisão Automóvel</a>
+                <a href="servicos#servico-9">Travões</a>
+                <a href="servicos#servico-10">Lâmpadas Auto</a>
+                <a href="servicos#servico-11">Baterias Auto</a>
+                <a href="servicos#servico-12">Alternador</a>
+                <a href="servicos#servico-13">Embraiagem</a>
+                <a href="servicos#servico-14">Amortecedoreso</a>
+                <a href="servicos#servico-15">Correia de Distribuição</a>
+                <a href="servicos#servico-16">Escapes</a>
+                <a href="servicos#servico-17">Mudança de Óleo</a>
+                <a href="servicos#servico-18">Diagnóstico</a>
             </div>
         </div>
 
@@ -83,6 +83,11 @@
                         <a href="marcacoes">Lista de marcações</a>
                         {% else %}
                         <a href="marcacoes">Marcações</a>
+                    {% endif %}
+                    {% if user|is_administrador %}
+                        <a href="orcamentos">Orçamentos</a>
+                        {% else %}
+                            <a href="orcamentos">Pedidos de orçamentos</a>
                     {% endif %}
                     <a href="obras.html">Obras Realizadas</a>-->
                     <a href="logout">Terminar sessão</a>

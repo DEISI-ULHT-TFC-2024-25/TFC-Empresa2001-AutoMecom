@@ -1,0 +1,92 @@
+{% extends 'automecom/layout.html' %}
+
+{% block main %}
+    <div class="main-content">
+        <div class="containermarc">
+            <div class="marcacoes-container" style=" height:auto;">
+            <h2>Pedir Orçamento</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <h3 style="margin-bottom:30px; margin-top:30px">Detalhes do Orçamento</h3>
+
+                <!-- Campo Nome (aparece apenas se o usuário não estiver logado) -->
+                {% if not request.user.is_authenticated %}
+                    <div class="form-group" >
+                        <label>{{ form.nome.label }}</label>
+                        {{ form.nome }}
+                    </div>
+                {% endif %}
+
+                <!-- Campo Email (aparece apenas se o usuário não estiver logado) -->
+                {% if not request.user.is_authenticated %}
+                    <div class="form-group">
+                        <label>{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                {% endif %}
+
+                 {% if not request.user.is_authenticated %}
+                    <div class="form-group" >
+                        <label>{{ form.telefone.label }}</label>
+                        {{ form.telefone }}
+                    </div>
+                {% endif %}
+
+                <!-- Outros campos que sempre aparecem -->
+                <div class="form-group">
+                    <label>{{ form.descricao.label }}</label>
+                    {{ form.descricao }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ form.data.label }}</label>
+                    {{ form.data }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ form.hora.label }}</label>
+                    {{ form.hora }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ form.servicos.label }}</label>
+                    {{ form.servicos }}
+                </div>
+
+                <h3 style="margin-bottom:40px; margin-top:30px">Detalhes do Veículo</h3>
+                <div class="form-group">
+                    <label>{{ veiculo_form.marca.label }}</label>  <!-- Corrigido de form para veiculo_form -->
+                    {{ veiculo_form.marca }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ veiculo_form.modelo.label }}</label>  <!-- Corrigido de form para veiculo_form -->
+                    {{ veiculo_form.modelo }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ veiculo_form.ano.label }}</label>  <!-- Corrigido de form para veiculo_form -->
+                    {{ veiculo_form.ano }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ veiculo_form.matricula.label }}</label>  <!-- Corrigido de form para veiculo_form -->
+                    {{ veiculo_form.matricula }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ veiculo_form.kms.label }}</label>  <!-- Corrigido de form para veiculo_form -->
+                    {{ veiculo_form.kms }}
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="btn btn-primary">Enviar Pedido</button>
+                </div>
+            </form>
+        </div>
+     </div>
+
+    </div>
+{% endblock %}

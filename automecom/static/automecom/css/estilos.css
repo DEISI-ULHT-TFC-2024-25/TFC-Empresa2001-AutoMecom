@@ -24,6 +24,17 @@
         width:100%
     }
 
+    .custom-form label {
+    color: white; /* Substitua pela cor desejada */
+}
+
+.help-text {
+    color: white; /* Define a cor do texto como branco */
+    font-style: italic; /* Opcional: deixa o texto em itálico */
+    margin-top: 4px; /* Adiciona espaço entre o campo e o texto */
+}
+
+
     header nav {
       display:flex;
       justify-content: flex-end;
@@ -54,11 +65,6 @@
     }
 
 
-    .subnav {
-      position: relative;
-      display: inline-block;
-    }
-
     .subnational {
       text-decoration: none;
       font-size: 1rem;
@@ -81,7 +87,7 @@
       margin-left: 10px;
       margin-right: 10px;
       max-height: 600px;
-        overflow-y: auto;
+      overflow-y: auto;
 
     }
 
@@ -91,6 +97,7 @@
       text-decoration: none;
       display: block;
       font-size: 14px;
+
     }
 
     .subnav-content a:hover {
@@ -142,7 +149,7 @@
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
-        margin: 4px 2px;
+        margin: 4px 100px;
         cursor: pointer;
     }
 
@@ -205,6 +212,8 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        margin-bottom: 20px; /* Altere o valor para o espaçamento desejado */
+
     }
 
     .form-actions {
@@ -363,7 +372,7 @@
         font-size: 0;
         padding: 5px 0;
         text-align: right;
-            margin-top: -10px; /* Ajuste o valor conforme necessário */
+        margin-top: -10px; /* Ajuste o valor conforme necessário */
 
     }
 
@@ -848,9 +857,7 @@ font-size: 20px;
         cursor: pointer;
         border:white;
         cursor: pointer;
-            margin-top: -50px;
-
-
+        margin-top: -50px;
         border-radius: 4px;
 
     }
@@ -969,7 +976,7 @@ font-size: 20px;
    background-color: #f8f9fa;
     padding: 20px;
     margin: 0 auto;
-    height: 680px;
+    height:auto;
     max-width: 800px;
     box-shadow: 0 4px 8px rgb(10, 20, 47);
     border-radius:10px;
@@ -981,7 +988,7 @@ font-size: 20px;
     .form-group-container {
     display: flex;       /* Usa o Flexbox para organizar os elementos */
     justify-content: space-between; /* Cria o espaçamento entre os elementos */
-}
+    }
 
      .marcacoes-container h2 {
         font-size: 1.5rem;
@@ -991,7 +998,6 @@ font-size: 20px;
         padding-bottom: 4px;
         margin-bottom: 10px;
      }
-
 
 
    .form-control {
@@ -1159,7 +1165,7 @@ background-color: #0056b3;
     color: #ffffff;
     padding: 10px 20px;
     border: none;
-        font-weight: bold;
+    font-weight: bold;
 
     border-radius: 5px;
     cursor: pointer;
@@ -1181,6 +1187,7 @@ background-color: #0056b3;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto; /* Centraliza o contêiner */
+
 }
 
 
@@ -1189,7 +1196,6 @@ background-color: #0056b3;
     background-color: #f8f9fa; /* Fundo claro para contraste */
     padding: 20px;
     margin: 0 auto;
-    height: 420px;
     max-width: 700px; /* Limita a largura da seção */
     box-shadow: 0 4px 8px rgb(10, 20, 47); /* Sombra com o tom especificado */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1217,6 +1223,7 @@ section {
     transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais intensa */
 }
+
 
 .Serv p {
     font-size: 16px;
@@ -1300,7 +1307,7 @@ section {
         justify-content: flex-start;
         width: 100%;
         padding: 20px;
-        }
+    }
 
     .introducao {
         display: flex;
@@ -1382,10 +1389,28 @@ section {
     justify-content: center;
     align-items: center;
     padding: 20px;
+
 }
 
     /* Responsividade para telas menores */
 @media screen and (max-width: 920px) {
+
+ main {
+      width: 100%; /* Certifica que ocupa 100% da largura disponível */
+    margin: 0; /* Remove margens que podem estar limitando */
+    padding: 0; /* Remove qualquer padding */
+    box-sizing: bord
+
+    }
+    body {
+    margin: 0;
+    padding: 0;
+    width: 100%; /* Certifique-se de que o `body` não esteja limitado */
+    height: 100%; /* Garante o preenchimento vertical */
+    display: block;
+}
+
+
 
 
     .buttonmarc {
@@ -1445,10 +1470,11 @@ section {
         width:50px;
         gap: 15px; /* Espaçamento horizontal entre os campos */
         margin-bottom: 15px; /* Espaçamento abaixo do contêiner */
-        margin-left: 30px;
+        margin-left: 70px;
         justify-content:center;
         align-items:center;
-    }
+      }
+
 
       .subnav-content a:hover {
       background-color: #0A142FFF;
@@ -1487,6 +1513,11 @@ section {
          order: 2;
          margin:auto;
       }
+
+      .subnav-content {
+        display: block; /* Ajuste para melhor visualização em dispositivos móveis */
+        margin-top: 10px;
+    }
 
 
     .container {
@@ -1547,7 +1578,7 @@ width:850px;
         flex-direction: column;
         gap: 10px;
         width:100%;
-        height:100%;
+        height:auto;
         margin-bottom:30px;
     }
 
@@ -1584,7 +1615,7 @@ width:850px;
      .marcacoesSection{
        margin-top:5px;
        margin-bottom:85px;
-       height:450px;
+       height:auto;
      }
 
     .form-group{
@@ -1611,6 +1642,17 @@ width:850px;
         text-align: center;
         margin-bottom: 10px;
     }
+
+    .form-control, .form-group label{
+    margin-left:170px;
+    flex-direction: column;
+   }
+
+   .btn  {
+   margin-left:90px;
+    flex-direction: column;
+   }
+
 
 }
 
@@ -1644,7 +1686,7 @@ width:850px;
    .profile-container {
         width: 95%;
         padding: 10px;
-    }
+   }
 
     .form-section h2 {
         font-size: 18px;
@@ -1659,7 +1701,6 @@ width:850px;
 
 
 }
-
 
 
 

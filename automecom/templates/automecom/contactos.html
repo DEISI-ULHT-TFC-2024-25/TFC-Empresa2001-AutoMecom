@@ -10,98 +10,99 @@
 <div class="contactos">
     <div class="containerrr">
         <div class="texttt">
-<br>
+            <br>
             <div>
-            <h3>Oficina horário</h3>
+                <h3>Oficina horário</h3>
                 <br>
-            <ul class="horario">
-                <li><strong>Seg</strong>  09:00 - 18:00</li>
-                <li><strong>Ter</strong>  09:00 - 18:00</li>
-                <li><strong>Qua</strong>  09:00 - 18:00</li>
-                <li><strong>Qui</strong>  09:00 - 18:00</li>
-                <li><strong>Sex</strong>  09:00 - 18:00</li>
+                <ul class="horario">
+                    <li><strong>Seg</strong> 09:00 - 18:00</li>
+                    <li><strong>Ter</strong> 09:00 - 18:00</li>
+                    <li><strong>Qua</strong> 09:00 - 18:00</li>
+                    <li><strong>Qui</strong> 09:00 - 18:00</li>
+                    <li><strong>Sex</strong> 09:00 - 18:00</li>
+                    <br>
+                    <li><strong>Almoço</strong> 13:00 - 14:00</li>
+                    <br>
+                    <li><strong>Sab</strong> Encerrado</li>
+                    <li><strong>Dom</strong> Encerrado</li>
+                </ul>
+            </div>
+            <div>
                 <br>
-                <li><strong>Almoço</strong>  13:00 - 14:00</li>
                 <br>
-                <li><strong>Sab</strong>  Encerrado</li>
-                <li><strong>Dom</strong>  Encerrado</li>
-            </ul>
-        </div>
-        <div>
-            <br>
-            <br>
-            <p><strong>Morada:</strong> Estr. Manuel Correia Lopes 576 2785-543 São Domingos de Rana</p>
-        </div>
-        <div class="contact-info">
-            <p><strong>Tel.</strong> 21 445 1746</p>
-            <p><strong>Tlm.</strong> 96 802 9742</p>
-        </div>
-        <div class="contact-info">
-            <p><strong>E-mail.</strong> geral@automecom.com</p>
-        </div>
+                <p><strong>Morada:</strong> Estr. Manuel Correia Lopes 576 2785-543 São Domingos de Rana</p>
+            </div>
+            <div class="contact-info">
+                <p><strong>Tel.</strong> 21 445 1746</p>
+                <p><strong>Tlm.</strong> 96 802 9742</p>
+            </div>
+            <div class="contact-info">
+                <p><strong>E-mail.</strong> geral@automecom.com</p>
+            </div>
         </div>
         <div class="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12449.948005096685!2d-9.3224715!3d38.7295854!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ecee2af2d6dd1%3A0xbca453df95bf3380!2sAuto%20Mecom%20Unipessoal%2C%20Lda!5e0!3m2!1spt-PT!2spt!4v1697317659783!5m2!1spt-PT!2spt" width="800" height="950" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12449.948005096685!2d-9.3224715!3d38.7295854!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ecee2af2d6dd1%3A0xbca453df95bf3380!2sAuto%20Mecom%20Unipessoal%2C%20Lda!5e0!3m2!1spt-PT!2spt!4v1697317659783!5m2!1spt-PT!2spt"
+                    width="800" height="950" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
 
-<div class="container-contacto">
-    <h2>Entre em Contato</h2>
+        <div class="container-contacto">
+            <h2>Entre em Contato</h2>
 
-    {% if messages %}
-      <div class="mensagens">
-        {% for message in messages %}
-          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-
-<form method="post">
-
-    {% csrf_token %}
-
-    {% if request.user.is_authenticated %}
-        <div class="mensagem">
-            <label for="mensagem">Mensagem:</label>
-            <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
-        </div>
-    {% else %}
-        <div class="nomesContacto linha">
-            <div>
-                <label for="Pnome">Primeiro Nome:</label>
-                <input type="text" id="Pnome" name="Pnome" required>
+            {% if messages %}
+            <div class="mensagens">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-            <div>
-                <label for="Unome">Último Nome:</label>
-                <input type="text" id="Unome" name="Unome" required>
-            </div>
-        </div>
+            {% endif %}
 
-        <div class="outrosContacto linha">
-            <div>
-                <label for="telemovel">Número de telemóvel:</label>
-                <input type="text" id="telemovel" name="telemovel" required>
-            </div>
-            <div>
-                <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" required>
-            </div>
-        </div>
 
-        <div class="mensagem">
-            <label for="mensagem">Mensagem:</label>
-            <textarea id="mensagem2" name="mensagem" rows="5" required></textarea>
-        </div>
-    {% endif %}
+            <form method="post" action="{% url 'automecom:Contacto' %}">
 
-    <button type="submit">Enviar Mensagem</button>
+                {% csrf_token %}
+                {% if request.user.is_authenticated %}
+                <div class="form-group">
+                    <label>{{ form.mensagem.label }}</label>
+                    {{ form.mensagem }}
+                </div>
+                {% else %}
+                <div class="nomesContacto linha">
+                    <div class="form-group">
+                        <label>{{ form.primeiro_nome.label }}</label>
+                        {{ form.primeiro_nome }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ form.ultimo_nome.label }}</label>
+                        {{ form.ultimo_nome }}
+                    </div>
+                </div>
+
+                <div class="outrosContacto linha">
+                    <div>
+                        <label>{{ form.telemovel.label }}</label>
+                        {{ form.telemovel }}
+                    </div>
+                    <div>
+                        <label>{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <div class="mensagem">
+                    <label>{{ form.mensagem.label }}</label>
+                    {{ form.mensagem }}
+                </div>
+                {% endif %}
+
+
+                <button type="submit">Enviar Mensagem</button>
             </form>
 
-</div>
-
+        </div>
 
     </div>
 </div>

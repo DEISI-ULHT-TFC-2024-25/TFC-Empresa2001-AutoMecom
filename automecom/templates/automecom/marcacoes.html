@@ -12,60 +12,98 @@
 {% load static %}
 
 <body>
+
+
+<form method="get" action="" class="filter-form" style="width: 300px;">
+    <label for="filtro" style="font-weight: bold;">Filtrar por estado:</label>
+    <select name="filtro" id="filtro" onchange="this.form.submit()" style="padding: 5px; margin: 10px 0;">
+        <option value="todos" {% if filtro == "todos" %}selected{% endif %}>Todos</option>
+        <option value="Por confirmar" {% if filtro == "Por confirmar" %}selected{% endif %}>Por confirmar</option>
+        <option value="Confirmado" {% if filtro == "Confirmado" %}selected{% endif %}>Confirmado</option>
+        <option value="Recusado" {% if filtro == "Recusado" %}selected{% endif %}>Recusado</option>
+    </select>
+</form>
+
 <section class="marcacoesSection">
+
+
 
     {% if marcacoes %}
         {% for marcacao in marcacoes %}
             {% if marcacao.estado != "Terminado" %}
-            <div class="Serv{% if user|is_administrador %} administrador{% endif %}">
-                <div>
-                    <br>
-                    {% if user|is_administrador %}
-                    <p><strong>Cliente:</strong> {{marcacao.nome}} {{marcacao.apelido}}</p>
-                    {% for servico in marcacao.servicos.all %}
-                    <p><strong>Serviço(s):</strong> {{ servico.nome }}</p>
-                    {% endfor %}
-                    <p><strong>Data:</strong> {{marcacao.data}}</p>
-                    <p><strong>Hora:</strong> {{marcacao.hora}}h</p>
-                    {% if marcacao.orcamento %}
-                    <p><strong>Orçamento:</strong> <a href="{{ marcacao.orcamento.url }}" target="_blank">Ver Orçamento</a></p>
-                    {% else %}
-                    <p><strong>Orçamento:</strong> Nenhum orçamento associado a esta obra.</p>
-                    {% endif %}
-                    <p><strong>Estado:</strong> {{marcacao.estado}}</p>
-                    {% else %}
-                    <p><strong>Data:</strong> {{marcacao.data}}</p>
-                    <p><strong>Hora:</strong> {{marcacao.hora}}h</p>
-                   {% for servico in marcacao.servicos.all %}
-                      <p><strong>Serviço(s):</strong> {{ servico.nome }}</p>
-                   {% endfor %}
-                    {% if marcacao.orcamento %}
-                    <p><strong>Orçamento:</strong> <a href="{{ marcacao.orcamento.url }}" target="_blank">Ver Orçamento</a></p>
-                    {% else %}
-                    <p><strong>Orçamento:</strong> Nenhum orçamento associado a esta obra.</p>
-                    {% endif %}
-                    <p><strong>Estado:</strong> {{marcacao.estado}}</p>
-                    {% endif %}
-                    <br>
+                <div class="Serv{% if user|is_administrador %} administrador{% endif %}">
+                    <div>
+                        <br>
+                        {% if user|is_administrador %}
+                            <p><strong>Cliente:</strong> {{ marcacao.nome }} {{ marcacao.apelido }}</p>
+                            {% for servico in marcacao.servicos.all %}
+                                <p><strong>Serviço:</strong> {{ servico.nome }}</p>
+                            {% endfor %}
+                            <p><strong>Descrição:</strong> {{ marcacao.descricao }}</p>
+                            <p><strong>Data:</strong> {{ marcacao.data }}</p>
+                            <p><strong>Hora:</strong> {{ marcacao.hora }}h</p>
+
+                            {% if marcacao.orcamento %}
+                                <p><strong>Orçamento:</strong> <a href="{{ marcacao.orcamento.url }}" target="_blank">Ver Orçamento</a></p>
+                            {% else %}
+                                <p><strong>Orçamento:</strong> Nenhum orçamento associado a esta obra.</p>
+                            {% endif %}
+                            <p><strong>Estado:</strong> {{ marcacao.estado }}</p>
+                        {% if marcacao.imagem %}
+                            <img src="{{ marcacao.imagem.url }}" style="width:300px; margin-top:20px">
+                        {% endif %}
+
+                        {% else %}
+                            <p><strong>Descrição:</strong> {{ marcacao.descricao }}</p>
+                            <p><strong>Data:</strong> {{ marcacao.data }}</p>
+                            <p><strong>Hora:</strong> {{ marcacao.hora }}h</p>
+                            {% for servico in marcacao.servicos.all %}
+                                <p><strong>Serviço:</strong> {{ servico.nome }}</p>
+                            {% endfor %}
+                            {% if marcacao.orcamento %}
+                                <p><strong>Orçamento:</strong> <a href="{{ marcacao.orcamento.url }}" target="_blank">Ver Orçamento</a></p>
+                            {% else %}
+                                <p><strong>Orçamento:</strong> Nenhum orçamento associado a esta obra.</p>
+                            {% endif %}
+                            <p><strong>Estado:</strong> {{ marcacao.estado }}</p>
+
+
+
+                        <!-- Exibir imagem se existir -->
+                        {% if marcacao.imagem %}
+                            <img src="{{ marcacao.imagem.url }}" style="width:300px; margin-top:20px">
+                        {% endif %}
+
+
+
+    {% endif %}
+
+                        <br>
+                    </div>
                 </div>
-            </div>
-            {% if user|is_administrador %}
-            <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Editar</a>
-            <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botao">Apagar</a>
-            {% else %}
-            <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Alterar</a>
-            <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botaoCancelar">Cancelar</a>
-            {% endif %}
-            <br>
+                {% if user|is_administrador %}
+                        <div class="marcacao-admin-actions">
+                            <a href="{% url 'automecom:alterar_estado_marcacao' marcacao.id 'Aceite' %}" class="botao" style="Background-color: green">Aceitar</a>
+                            <a href="{% url 'automecom:alterar_estado_marcacao' marcacao.id 'Recusado' %}" class="botaoCancelar" style="Background-color: red">Recusar</a>
+                            <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Editar</a>
+                            <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botaoCancelar">Apagar</a>
+                        </div>
+                    {% else %}
+                        <div class="marcacao-client-actions">
+                            <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Alterar</a>
+                            <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botaoCancelar">Cancelar</a>
+                        </div>
+                    {% endif %}
+                <br>
             {% endif %}
         {% endfor %}
     {% else %}
         <!-- Se não houver marcações -->
         <p class="no-marcacoes">Não há marcações no momento.</p>
+        <a href="marcacao" class="botao">Marcação</a>
     {% endif %}
 
 </section>
-
 </body>
 </html>
 {% endblock %}

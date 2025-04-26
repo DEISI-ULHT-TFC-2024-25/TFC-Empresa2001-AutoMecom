@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Mecom | Orçamentos</title>
+</head>
+
+{% extends 'automecom/layout.html' %}
+{% load custom_tags %}
+
+{% block main %}
+{% load static %}
+
+<body>
+<section class="marcacoesSection">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if orcamentos %}
+        {% for orcamento in orcamentos %}
+            <div class="Serv{% if user|is_administrador %} administrador{% endif %}">
+                <div>
+                    <br>
+                    {% if user|is_administrador %}
+                        <p><strong>Cliente:</strong>
+                            {% if orcamento.user %}
+                                {{ orcamento.user.first_name }} {{ orcamento.user.last_name }}
+                            {% else %}
+                                {{ orcamento.nome }}
+                            {% endif %}
+                        </p>
+                        <p><strong>Email:</strong>
+                            {% if orcamento.user %}
+                                {{ orcamento.user.email }}
+                            {% else %}
+                                {{ orcamento.email }}
+                            {% endif %}
+                        </p>
+                        <p><strong>Telefone:</strong>
+                            {% if orcamento.user %}
+                                {{ orcamento.telefone|default:"Não informado" }}
+                            {% else %}
+                                {{ orcamento.telefone }}
+                            {% endif %}
+                        </p>
+                    {% endif %}
+                    <p><strong>Descrição:</strong> {{ orcamento.descricao }}</p>
+                    <p><strong>Data:</strong> {{ orcamento.data }}</p>
+                    <p><strong>Hora:</strong> {{ orcamento.hora }}</p>
+                    <p><strong>Veículo:</strong> {{ orcamento.veiculo.marca }} {{ orcamento.veiculo.modelo }} ({{ orcamento.veiculo.matricula }})</p>
+                    <p><strong>Serviços:</strong></p>
+                        {% for servico in orcamento.servicos.all %}
+                            <li>{{ servico.nome }}</li>
+                        {% endfor %}
+
+                    {% if orcamento.arquivo_pdf %}
+    <p><strong>Orçamento em PDF:</strong>
+        <a href="{{ orcamento.arquivo_pdf.url }}" target="_blank">Baixar/Visualizar PDF</a>
+    </p>
+{% else %}
+    <p> Nenhum orçamento em PDF disponível.</p>
+{% endif %}
+
+
+                    <br>
+                </div>
+            </div>
+
+            {% if user|is_administrador %}
+                <a href="{% url 'automecom:editarorca' orcamento.id %}" class="botao">Editar</a>
+                <a href="{% url 'automecom:apagarorca' orcamento.id %}" class="botao">Apagar</a>
+            {% else %}
+                <a href="{% url 'automecom:editarorca' orcamento.id %}" class="botao">Alterar</a>
+                <a href="{% url 'automecom:apagarorca' orcamento.id %}" class="botaoCancelar">Cancelar</a>
+            {% endif %}
+
+            <br>
+        {% endfor %}
+    {% else %}
+        <!-- Se não houver orçamentos -->
+        <p class="no-orcamentos">Não há orçamentos no momento.</p>
+        <a href="{% url 'automecom:orcamento' %}" class="botao">Pedir Orçamento</a>
+    {% endif %}
+</section>
+</body>
+</html>
+{% endblock %}

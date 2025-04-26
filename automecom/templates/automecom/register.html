@@ -1,26 +1,60 @@
-
 {% extends 'automecom/layout.html' %}
 
 {% block main %}
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <title>Auto Mecom | Registar</title>
-</head>
 
 <div class="subblock2">
-<div class="loginblock2">
+    <div class="loginblock2">
 
-{% block content %}
+        {% block content %}
+        <form method="POST" novalidate class="custom-form">
+            {% csrf_token %}
+            <h2>Criação de conta</h2><br><br>
+            
+            <!-- Usando form-group para garantir espaçamento adequado entre campos -->
+            <div class="form-group">
+                            <label>{{ form.username.label }}</label>
+                {{ form.username }}
+            </div>
 
-<form method="POST" novalidate>
-	{% csrf_token %}
-	<h2>Criação de conta</h2><br><br>
-	{{ form.as_p }}
-    <br>
-	<input class="submit" type="submit" value="Criar a minha conta" />
-</form>
+            <div class="form-group">
+                            <label>{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="form-group">
+                            <label>{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+            </div>
+
+            <div class="form-group">
+                            <label>{{ form.telefone.label }}</label>
+                {{ form.telefone }}
+            </div>
+
+            <div class="form-group">
+                            <label>{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                            <label>{{ form.password1.label }}</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-group">
+                            <label>{{ form.password2.label }}</label>
+                {{ form.password2 }}
+            </div>
+
+            <br>
+            <br>
+            <br><br>
+            <br>
+
+            <input class="submit" type="submit" value="Criar a minha conta" />
+        </form>
+        {% endblock content %}
+    </div>
 </div>
-</div>
-{% endblock content%}
 {% endblock %}
