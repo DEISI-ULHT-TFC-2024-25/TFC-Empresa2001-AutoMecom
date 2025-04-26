@@ -1,6 +1,9 @@
+from datetime import datetime, date
+
 from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.forms import forms
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -27,7 +30,6 @@ def listar_orcamentos(request):
 
     utilizador = Utilizador.objects.get(user=request.user)
 
-    # Se o usuário for administrador, mostra todos os pedidos
     if is_administrador(request.user):
         orcamentos = Orcamento.objects.all()
     # Se for um cliente autenticado, mostra apenas os pedidos dele
@@ -49,7 +51,6 @@ def pedido_orcamento(request):
     form = OrcamentoForm(request.POST or None)
     veiculo_form = VeiculoForm(request.POST or None)
 
-    # Se o usuário estiver logado, não exigir os campos de nome e email
 
     if request.user.is_authenticated:
         form.fields['nome'].required = False
@@ -63,7 +64,6 @@ def pedido_orcamento(request):
 
     if request.method == 'POST':
         if form.is_valid() and veiculo_form.is_valid():
-            # Salvar o orçamento
             orcamento = form.save(commit=False)
             orcamento.veiculo = veiculo_form.save()  # Associar o veículo ao orçamento
 
@@ -72,7 +72,6 @@ def pedido_orcamento(request):
 
             orcamento.save()
             form.save_m2m()
-            messages.success(request, "Pedido enviado com sucesso!")  # Mensagem de sucesso
             return redirect('automecom:orcamentos')  # Redireciona após o envio
 
     return render(request, 'automecom/orcamento.html', {
@@ -349,7 +348,7 @@ def perfil_view(request):
             form3 = PasswordForm(request.user)
             context = {'form': form, 'form2': form2, 'form3': form3}
 
-        return render(request, 'automecom/perfil.html', context)
+        return render(request, 'automecom/perfil.html',context)
 
 
 @login_required
@@ -376,8 +375,8 @@ def marcacao_view(request):
     if request.method == 'POST':
         form = MarcacaoForm()
         form2 = VeiculoForm(request.POST)
-        if form2.is_valid():
 
+        if form2.is_valid():
 
             veiculo = form2.save()
 

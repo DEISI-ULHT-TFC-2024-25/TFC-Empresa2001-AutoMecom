@@ -89,24 +89,6 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dataInput = document.getElementById('id_data'); // Altere o ID se necessário
-        const horaInput = document.getElementById('id_hora'); // Altere o ID se necessário
-
-        dataInput.addEventListener('change', function () {
-            const dataSelecionada = new Date(this.value);
-            const hoje = new Date();
-
-            if (dataSelecionada.toDateString() === hoje.toDateString()) {
-                const agora = hoje.toISOString().slice(11, 16); // Hora atual no formato HH:mm
-                horaInput.min = agora; // Define o mínimo como a hora atual
-            } else {
-                horaInput.removeAttribute('min'); // Remove restrição para outras datas
-            }
-        });
-    });
-</script>
 
 {% endblock %}
 

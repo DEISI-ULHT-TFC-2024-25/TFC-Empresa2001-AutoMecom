@@ -1,12 +1,13 @@
-from datetime import datetime, date, timedelta
+from datetime import date
+from datetime import datetime, timedelta
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 from .models import Servico, Utilizador, Veiculo, Marcacao, TipoServico, Orcamento
-from .widget import DatePickerInput, TimePickerInput
 
 
 class ServicoForm(forms.ModelForm):
@@ -126,10 +127,6 @@ class ContatoForm(forms.Form):
     )
 
 
-from django import forms
-from datetime import datetime, timedelta
-from datetime import date
-from .models import Servico  # Certifique-se de que o modelo 'Servico' está sendo importado corretamente
 
 class MarcacaoForm(forms.Form):
     nome = forms.CharField(
@@ -202,10 +199,16 @@ class MarcacaoForm(forms.Form):
     def clean_hora(self):
         hora = self.cleaned_data['hora']
         data = self.cleaned_data.get('data')
+
         if data == date.today():
             agora = datetime.now().time()
             if datetime.strptime(hora, "%H:%M").time() <= agora:
                 raise forms.ValidationError("A hora não pode estar no passado.")
+
+        # Verificar se já existe uma marcação para a mesma data e hora
+        if Marcacao.objects.filter(data=data, hora=hora).exists():
+            raise ValidationError("Já existe uma marcação para essa data e hora.")
+
         return hora
 
 
@@ -264,7 +267,8 @@ class OrcamentoForm(forms.ModelForm):
     )
     data = forms.DateField(
         required=True,
-        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Selecione a data'})
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'min': date.today().isoformat(),
+                                      'placeholder': 'Selecione a data'})
     )
     hora = forms.TimeField(
         required=True,
