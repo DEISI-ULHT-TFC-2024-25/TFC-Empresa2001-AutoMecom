@@ -213,9 +213,11 @@ class MarcacaoForm(forms.Form):
 
 
 class MarcacaoEditForm(forms.ModelForm):
+    marcar_como_terminada = forms.BooleanField(required=False, label="Marcar como Terminada")
+
     class Meta:
         model = Marcacao
-        fields = ['nome', 'apelido', 'email', 'servicos', 'imagem', 'data', 'descricao', 'hora',
+        fields = ['nome', 'apelido', 'email', 'servicos', 'imagem', 'data', 'descricao', 'estado', 'hora',
                   'orcamento', 'observacoes', 'fatura']
 
 class OrcamentoEditForm(forms.ModelForm):
@@ -228,12 +230,12 @@ class OrcamentoEditForm(forms.ModelForm):
 class MarcacaoEditFormClient(forms.ModelForm):
     class Meta:
         model = Marcacao
-        fields = ['nome', 'apelido', 'email', 'imagem', 'servicos', 'data', 'hora', 'descricao']
+        fields = ['nome', 'apelido', 'email', 'imagem', 'servicos', 'descricao']
 
 class OrcamentoEditFormClient(forms.ModelForm):
     class Meta:
         model = Marcacao
-        fields = ['nome', 'apelido', 'email', 'servicos', 'data', 'hora', 'descricao']
+        fields = ['nome', 'apelido', 'email', 'servicos', 'descricao']
 
 class OrcamentoForm(forms.ModelForm):
     nome = forms.CharField(
@@ -265,16 +267,8 @@ class OrcamentoForm(forms.ModelForm):
         required=True,
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Descreva a situação'})
     )
-    data = forms.DateField(
-        required=True,
-        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'min': date.today().isoformat(),
-                                      'placeholder': 'Selecione a data'})
-    )
-    hora = forms.TimeField(
-        required=True,
-        widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time', 'placeholder': 'Selecione a hora'})
-    )
+
 
     class Meta:
         model = Orcamento  # Especifica o modelo associado
-        fields = ['nome', 'email', 'descricao', 'data', 'hora', 'servicos','arquivo_pdf']
+        fields = ['nome', 'email', 'descricao', 'servicos','arquivo_pdf']

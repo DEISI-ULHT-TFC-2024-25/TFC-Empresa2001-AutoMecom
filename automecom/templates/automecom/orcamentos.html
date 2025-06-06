@@ -52,8 +52,6 @@
                         </p>
                     {% endif %}
                     <p><strong>Descrição:</strong> {{ orcamento.descricao }}</p>
-                    <p><strong>Data:</strong> {{ orcamento.data }}</p>
-                    <p><strong>Hora:</strong> {{ orcamento.hora }}</p>
                     <p><strong>Veículo:</strong> {{ orcamento.veiculo.marca }} {{ orcamento.veiculo.modelo }} ({{ orcamento.veiculo.matricula }})</p>
                     <p><strong>Serviços:</strong></p>
                         {% for servico in orcamento.servicos.all %}
@@ -83,11 +81,14 @@
 
             <br>
         {% endfor %}
-    {% else %}
-        <!-- Se não houver orçamentos -->
+   {% else %}
+    {% if user.is_authenticated %}
+        <!-- Mostrar mensagem para usuários autenticados -->
         <p class="no-orcamentos">Não há orçamentos no momento.</p>
-        <a href="{% url 'automecom:orcamento' %}" class="botao">Pedir Orçamento</a>
     {% endif %}
+    <a href="{% url 'automecom:orcamento' %}" class="botao">Pedir Orçamento</a>
+{% endif %}
+
 </section>
 </body>
 </html>

@@ -14,6 +14,7 @@
 <body>
 
 
+
 <form method="get" action="" class="filter-form" style="width: 300px;">
     <label for="filtro" style="font-weight: bold;">Filtrar por estado:</label>
     <select name="filtro" id="filtro" onchange="this.form.submit()" style="padding: 5px; margin: 10px 0;">
@@ -26,6 +27,15 @@
 
 <section class="marcacoesSection">
 
+{% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-success toast">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 
     {% if marcacoes %}

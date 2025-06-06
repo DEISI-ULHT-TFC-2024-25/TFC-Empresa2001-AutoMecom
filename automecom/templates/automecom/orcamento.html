@@ -6,6 +6,14 @@
             <div class="marcacoes-container" style=" height:auto;">
             <h2>Pedir Orçamento</h2>
 
+                {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
             <form method="post">
                 {% csrf_token %}
 
@@ -40,15 +48,6 @@
                     {{ form.descricao }}
                 </div>
 
-                <div class="form-group">
-                    <label>{{ form.data.label }}</label>
-                    {{ form.data }}
-                </div>
-
-                <div class="form-group">
-                    <label>{{ form.hora.label }}</label>
-                    {{ form.hora }}
-                </div>
 
                 <div class="form-group">
                     <label>{{ form.servicos.label }}</label>

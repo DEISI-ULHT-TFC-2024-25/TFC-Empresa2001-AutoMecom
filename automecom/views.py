@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.forms import forms
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -24,23 +24,23 @@ def is_superuser(user):
 
 def home_view(request):
     return render(request, 'automecom/home.html')
-
-
 def listar_orcamentos(request):
+    utilizador = None
+    orcamentos = None
 
-    utilizador = Utilizador.objects.get(user=request.user)
+    if request.user.is_authenticated:  # Verifica se o usuário está autenticado
+        try:
+            utilizador = Utilizador.objects.get(user=request.user)
+        except Utilizador.DoesNotExist:
+            messages.error(request, "Usuário não encontrado.")
+            return redirect('automecom:login')  # Ou outra lógica para lidar com erro
 
-    if is_administrador(request.user):
-        orcamentos = Orcamento.objects.all()
-    # Se for um cliente autenticado, mostra apenas os pedidos dele
-    elif request.user.is_authenticated:
-        orcamentos = Orcamento.objects.filter(user=request.user)
-        print(f"Orçamentos do cliente {request.user.username}: {orcamentos}")  # Debug
+        if is_administrador(request.user):  # Usuário é administrador
+            orcamentos = Orcamento.objects.all()
+        else:  # Usuário autenticado e não administrador
+            orcamentos = Orcamento.objects.filter(user=request.user)
 
-    else:
-        orcamentos = None  # Define como None para evitar erros
-        messages.error(request, "Você precisa fazer login para acessar esta página.")
-        return redirect('automecom:login')  # Substitua pelo nome correto da view de login
+
 
     return render(request, 'automecom/orcamentos.html', {
         'orcamentos': orcamentos
@@ -51,33 +51,31 @@ def pedido_orcamento(request):
     form = OrcamentoForm(request.POST or None)
     veiculo_form = VeiculoForm(request.POST or None)
 
-
-    if request.user.is_authenticated:
-        form.fields['nome'].required = False
-        form.fields['email'].required = False
-        form.fields['telefone'].required = False
-    else:
-        form.fields['nome'].required = True
-        form.fields['email'].required = True
-        form.fields['telefone'].required = True
-
+    # Configura campos obrigatórios com base no estado do usuário
+    is_authenticated = request.user.is_authenticated
+    form.fields['nome'].required = not is_authenticated
+    form.fields['email'].required = not is_authenticated
+    form.fields['telefone'].required = not is_authenticated
 
     if request.method == 'POST':
         if form.is_valid() and veiculo_form.is_valid():
             orcamento = form.save(commit=False)
-            orcamento.veiculo = veiculo_form.save()  # Associar o veículo ao orçamento
+            orcamento.veiculo = veiculo_form.save()  # Associa o veículo ao orçamento
 
-            if request.user.is_authenticated:
-                orcamento.user = request.user
+            if is_authenticated:
+                orcamento.user = request.user  # Associa o usuário apenas se autenticado
 
             orcamento.save()
-            form.save_m2m()
-            return redirect('automecom:orcamentos')  # Redireciona após o envio
+            form.save_m2m()  # Salva as relações many-to-many, se houver
+            if not is_authenticated:
+                messages.success(request, "O orçamento foi enviado com sucesso!")
+            return redirect('automecom:orcamentos')  # Redireciona após envio bem-sucedido
 
     return render(request, 'automecom/orcamento.html', {
         'form': form,
         'veiculo_form': veiculo_form
     })
+
 
 @login_required
 def view_logout(request):
@@ -250,31 +248,21 @@ def privacidade_view(request):
     return render(request, 'automecom/privacidade.html')
 
 
-from django.core.exceptions import ObjectDoesNotExist
 
 def obras_view(request):
     if not Utilizador.objects.filter(user=request.user).exists():
-        # Redirecionar para a página inicial ou outra página
         return HttpResponseRedirect(reverse('automecom:Home'))
 
-    utilizador = Utilizador.objects.get(user=request.user)
-    context = {
-        "marcacoes": Marcacao.objects.filter(utilizador_id=utilizador),
-        "estado": Marcacao.estado,
-        "data": Marcacao.data,
-        "hora": Marcacao.hora,
-    }
-
     if is_administrador(request.user):
-        context = {
-            "marcacoes": Marcacao.objects.all(),
-            "estado": Marcacao.estado,
-            "data": Marcacao.data,
-            "hora": Marcacao.hora,
-        }
+        marcacoes_realizadas = Marcacao.objects.filter(estado='Terminada')
+    else:
+        utilizador = Utilizador.objects.get(user=request.user)
+        marcacoes_realizadas = Marcacao.objects.filter(utilizador=utilizador, estado='Terminada')
 
+    context = {
+        "marcacoes": marcacoes_realizadas,
+    }
     return render(request, 'automecom/obras.html', context)
-
 
 
 
@@ -350,7 +338,6 @@ def perfil_view(request):
 
         return render(request, 'automecom/perfil.html',context)
 
-
 @login_required
 def utilizador_delete(request, post_id):
     if Utilizador.objects.filter(pk=post_id).exists():
@@ -373,7 +360,7 @@ def marcacao_view(request):
         return render(request, 'automecom/marcacao.html', {'form': form, 'form2': form2})
 
     if request.method == 'POST':
-        form = MarcacaoForm()
+        form = MarcacaoForm(request.POST)
         form2 = VeiculoForm(request.POST)
 
         if form2.is_valid():
@@ -512,11 +499,14 @@ def orcamento_edit(request, post_id):
 def marcacao_delete(request, post_id):
     if Marcacao.objects.filter(pk=post_id).exists():
         Marcacao.objects.get(pk=post_id).delete()
+        messages.success(request, "Marcação apagada com sucesso!")
     return HttpResponseRedirect(reverse('automecom:marcacoes'))
 
 def orcamento_delete(request, post_id):
     if Orcamento.objects.filter(pk=post_id).exists():
         Orcamento.objects.get(pk=post_id).delete()
+        messages.success(request, "Orçamento apagado com sucesso!")
+
     return HttpResponseRedirect(reverse('automecom:orcamentos'))
 
 

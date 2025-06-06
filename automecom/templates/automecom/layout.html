@@ -7,9 +7,9 @@
     <meta charset="UTF-8">
     <title>Auto Mecom </title>
 
-    <link rel="stylesheet" href="{% static 'automecom/css/estilos.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'automecom/css/estilos.css' %}">
 
 
     {% block styles %}
@@ -23,13 +23,10 @@
 <body>
   <header>
       <nav class="logo"><a class="textmenu" href="home">AUTO MECOM</a></nav>
-
       <input type="checkbox" id="menu-toggle" class="menu-checkbox" aria-label="Abrir menu">
-  <label for="menu-toggle" class="menu-toggle-label">
-    <i class="fa fa-bars"></i>
-  </label>
-
-
+       <label for="menu-toggle" class="menu-toggle-label">
+          <i class="fa fa-bars"></i>
+        </label>
 
 
       <nav class="textmenu menu-links">

@@ -2,10 +2,10 @@
 {% block main %}
 <section class="form-container">
     <!-- Exibir mensagens de feedback -->
-    {% if messages %}
+     {% if messages %}
         <div class="messages">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-success toast">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -73,7 +73,7 @@
         </div>
 
         <div class="form-actions">
-            <a href="{% url 'automecom:Marcação' %}" role="button" class="btn btn-cancel">Cancelar</a>
+            <a href="{% url 'automecom:marcacoes' %}" role="button" class="btn btn-cancel">Cancelar</a>
 
             <input type="submit" value="Gravar" class="btn btn-save">
             <a href="{% url 'automecom:apagarmarc' post_id %}" role="button" class="btn btn-delete">Apagar</a>

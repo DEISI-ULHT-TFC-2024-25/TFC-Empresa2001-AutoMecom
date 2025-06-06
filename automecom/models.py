@@ -57,8 +57,10 @@ class Marcacao(models.Model):
     ESTADOS = [
         ('Por confirmar', 'Por confirmar'),
         ('Confirmado', "Confirmado"),
-        ('Recusado', 'Recusado')
+        ('Recusado', 'Recusado'),
+        ('Terminada', 'Terminada')
     ]
+
     estado = models.CharField(max_length=50, choices=ESTADOS, default='Por confirmar')
 
     numero = models.IntegerField(default=0)
@@ -76,8 +78,6 @@ class Orcamento(models.Model):
     email = models.EmailField(null=True, blank=True)
     telefone = models.IntegerField(null=True, blank=True)
     descricao = models.TextField()
-    data = models.DateField()
-    hora = models.TimeField()
     servicos = models.ManyToManyField(Servico)
     veiculo = models.OneToOneField(Veiculo, on_delete=models.CASCADE, null=True, blank=True)
     arquivo_pdf = models.FileField(null=True, blank=True)

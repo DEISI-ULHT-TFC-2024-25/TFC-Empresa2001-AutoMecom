@@ -47,7 +47,8 @@ urlpatterns = [
     path('login/registro', views.register_view, name='register'),
     path('login/orcamentos', views.listar_orcamentos, name='orcamentos'),
     path('login/perfil', views.perfil_view, name="perfil"),
-
+    path('login/privacidade.html', views.privacidade_view, name='privacidade'),
+    path('login/garantia.html', views.garantia_view, name='garantia'),
 
 ]
 

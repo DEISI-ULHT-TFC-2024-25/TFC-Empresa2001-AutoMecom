@@ -121,6 +121,7 @@
       background-color:white;
       box-sizing: border-box;
        padding: 0px; /* Espaçamento interno */
+      width:100%;
 
     }
 
@@ -279,7 +280,7 @@
 
     footer {
       position: relative;
-      height: 20vh;
+      height: auto;
       display: flex;
       flex-direction:column;
       justify-content: flex-end;
@@ -1395,20 +1396,30 @@ section {
     /* Responsividade para telas menores */
 @media screen and (max-width: 920px) {
 
- main {
+ .main {
       width: 100%; /* Certifica que ocupa 100% da largura disponível */
     margin: 0; /* Remove margens que podem estar limitando */
     padding: 0; /* Remove qualquer padding */
-    box-sizing: bord
+   box-sizing: border-box;
+ }
 
-    }
+body, html {
+    overflow-x: hidden;
+}
     body {
     margin: 0;
     padding: 0;
     width: 100%; /* Certifique-se de que o `body` não esteja limitado */
     height: 100%; /* Garante o preenchimento vertical */
-    display: block;
-}
+    }
+/*Footer */
+      .footer {
+        padding:0px;
+        height:20px;;
+        position:absolute;
+        bottom:0;
+
+      }
 
 
 
@@ -1434,6 +1445,10 @@ section {
 
       .containerHome{
        flex-direction: column;
+       width:auto;
+               padding: 15px; /* Já tinhas, mas confirma */
+
+
       }
 
       /* Oculta o menu principal inicialmente */
@@ -1481,14 +1496,7 @@ section {
       color: lightgray;
       }
 
-      /*Footer */
-      .footer {
-        padding:0px;
-        height:40px;
-        position:absolute;
-        bottom:0;
 
-      }
 
      .rightsubmenu {
        margin-top: -50px;
@@ -1499,9 +1507,6 @@ section {
 
      }
 
-     .containerHome{
-     margin-left:20%;
-     }
 
       .introducao {
         display: flex;
@@ -1524,6 +1529,12 @@ section {
            flex-direction: column;
    }
 
+.promo {
+width:100%;
+}
+.comprido {
+width:100%;
+}
    container-contacto{
         gap: 10px;
         width:100%;
@@ -1531,16 +1542,16 @@ section {
     }
 
 
-    .imagem-introducao {
+    .imagem-introducao img {
          display: block;
          text-align: center;
          order: 1;
-        width:300px;
+        width:100%;
     }
 
 
 .slideshow-container, .promo, .comprido{
-width:850px;
+width:100%;
 }
     /* Estilo das imagens (slides) */
     .mySlides {
@@ -1653,6 +1664,10 @@ width:850px;
     flex-direction: column;
    }
 
+   .creditos{
+   height:auto;
+   }
+
 
 }
 
@@ -1701,7 +1716,6 @@ width:850px;
 
 
 }
-
 
 
 
