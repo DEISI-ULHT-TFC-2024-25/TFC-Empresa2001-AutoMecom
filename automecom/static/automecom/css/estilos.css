@@ -261,6 +261,40 @@
         background-color: #ec971f;
     }
 
+.toast-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1055;
+}
+
+.toast-static {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #d4edda; /* Verde claro para sucesso */
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    color: #155724;
+    font-family: Arial, sans-serif;
+    opacity: 1; /* Mensagem inicialmente visível */
+    animation: fadeOut 3s ease-in forwards; /* Aplica a animação de fade-out */
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1; /* Totalmente visível */
+    }
+    100% {
+        opacity: 0; /* Totalmente invisível */
+                visibility: hidden; /* Para ocultar completamente */
+
+    }
+}
+
+.fade-out {
+    animation: fadeOut 3s ease-in forwards; /* Garantir que a animação seja aplicada */
+}
+
 
 
     #mecanico{

@@ -1,31 +1,17 @@
 {% extends 'automecom/layout.html' %}
 
+
 {% block main %}
-<div class="main-content">
-    <h1>Editar Marcação</h1>
-    <section>
-        <form method="POST" action="{% url 'automecom:editar' marcacao.id %}" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            {{ form.as_p }}
-
-            <!-- Mostrar a imagem existente da marcação, se disponível -->
-            <div class="imagem-atual">
-                {% if marcacao.imagem %}
-                    <p><strong>Imagem Atual:</strong></p>
-                    <img src="{{ marcacao.imagem.url }}" alt="Imagem da Marcação" width="200">
-                {% else %}
-                    <p><strong>Sem imagem</strong></p>
-                {% endif %}
-            </div>
-
-            <!-- Botões de ação -->
-            <div class="acoes">
-                <a href="{% url 'automecom:Servico' %}" class="botaoCancelar" role="button">Cancelar</a>
-                <input type="submit" class="botao" value="Gravar">
-                <a href="{% url 'automecom:apagar' marcacao.id %}" class="botaoCancelar" role="button">Apagar</a>
-            </div>
-        </form>
-    </section>
-</div>
+<h3>Novo Post</h3>
+<section>
+<form method ="POST" action="{% url 'automecom:editar'  post_id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <a href="{% url 'automecom:Servico' %}" role="button">Cancelar</a>
+    <div class="gravar">
+        <input type="submit" value="Gravar">
+    </div>
+    <a href="{% url 'automecom:apagar' post_id %}" role="button">Apagar</a>
+</form>
+</section>
 {% endblock %}

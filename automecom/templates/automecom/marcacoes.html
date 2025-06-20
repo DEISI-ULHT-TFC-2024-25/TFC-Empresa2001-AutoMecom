@@ -25,17 +25,34 @@
     </select>
 </form>
 
-<section class="marcacoesSection">
-
 {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <div class="alert alert-success toast">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+<div class="toast-container" style="position: fixed; top: 50px; right: 10px; z-index: 1055;">
+    {% for message in messages %}
+    <div class="toast-message" id="message-{{ forloop.counter }}" style="padding: 10px; margin-top: 20px; background-color: #FDF5E6; border: 1px solid #c3e6cb; border-radius: 5px; color: #000000	;">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Seleciona todas as mensagens
+        const messages = document.querySelectorAll(".toast-message");
+
+        messages.forEach((message) => {
+            // Define um timeout para remover cada mensagem
+            setTimeout(() => {
+                message.style.transition = "opacity 1s";
+                message.style.opacity = "0";
+                setTimeout(() => message.remove(), 1000); // Remove o elemento após a transição
+            }, 3000); // Tempo antes de desaparecer (3 segundos)
+        });
+    });
+</script>
+
+
+<section class="marcacoesSection">
 
 
     {% if marcacoes %}
@@ -117,3 +134,5 @@
 </body>
 </html>
 {% endblock %}
+
+

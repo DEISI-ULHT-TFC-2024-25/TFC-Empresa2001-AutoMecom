@@ -9,8 +9,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from .forms import ServicoForm, UtilizadorForm, UserForm, PasswordForm, RegisterForm, MarcacaoForm, VeiculoForm, \
-    MarcacaoEditForm, MarcacaoEditFormClient, OrcamentoForm, OrcamentoEditForm, OrcamentoEditFormClient, ContatoForm
-from .models import Servico, Utilizador, Veiculo, Marcacao, Orcamento
+    MarcacaoEditForm, MarcacaoEditFormClient, OrcamentoForm, OrcamentoEditForm, OrcamentoEditFormClient, ContatoForm, \
+    ObraEditForm, conselhoForm
+from .models import Servico, Utilizador, Veiculo, Marcacao, Orcamento, Obra, Conselho
 from django import template
 
 from .templatetags.custom_tags import is_administrador
@@ -45,44 +46,79 @@ def listar_orcamentos(request):
     return render(request, 'automecom/orcamentos.html', {
         'orcamentos': orcamentos
     })
-
 def pedido_orcamento(request):
-    # Criar instâncias dos formulários
-    form = OrcamentoForm(request.POST or None)
-    veiculo_form = VeiculoForm(request.POST or None)
-
-    # Configura campos obrigatórios com base no estado do usuário
     is_authenticated = request.user.is_authenticated
-    form.fields['nome'].required = not is_authenticated
-    form.fields['email'].required = not is_authenticated
-    form.fields['telefone'].required = not is_authenticated
 
     if request.method == 'POST':
+        form = OrcamentoForm(request.POST)
+        veiculo_form = VeiculoForm(request.POST)
+
+
+        form.fields['nome'].required = not is_authenticated
+        form.fields['email'].required = not is_authenticated
+        form.fields['telefone'].required = not is_authenticated
+        if 'apelido' in form.fields: # Verifique se o campo 'apelido' existe no seu OrcamentoForm
+            form.fields['apelido'].required = not is_authenticated
+
         if form.is_valid() and veiculo_form.is_valid():
             orcamento = form.save(commit=False)
-            orcamento.veiculo = veiculo_form.save()  # Associa o veículo ao orçamento
+            orcamento.veiculo = veiculo_form.save() # Cria e associa o veículo
 
             if is_authenticated:
-                orcamento.user = request.user  # Associa o usuário apenas se autenticado
+                orcamento.user = request.user
+                orcamento.nome = request.user.first_name
+                orcamento.apelido = request.user.last_name
+                orcamento.email = request.user.email
+
+                try:
+                    utilizador_perfil = Utilizador.objects.get(user=request.user)
+                    orcamento.telefone = utilizador_perfil.telefone
+                except Utilizador.DoesNotExist:
+
+                    pass
+                except AttributeError:
+                    # Lide com o caso se utilizador_perfil não tiver o atributo telefone
+                    pass
 
             orcamento.save()
-            form.save_m2m()  # Salva as relações many-to-many, se houver
-            if not is_authenticated:
-                messages.success(request, "O orçamento foi enviado com sucesso!")
-            return redirect('automecom:orcamentos')  # Redireciona após envio bem-sucedido
+            form.save_m2m() # Salva as relações ManyToMany (ex: Servicos)
+
+            messages.success(request, "Seu pedido de orçamento foi enviado com sucesso!")
+            return redirect('automecom:orcamentos')
+
+        else:
+            messages.error(request, "Houve um erro ao enviar o pedido. Por favor, verifique os dados.")
+
+    else: # request.method == 'GET'
+        initial_data_orcamento = {}
+        if is_authenticated:
+            # Pré-popular os campos do formulário para usuários logados
+            initial_data_orcamento = {
+                'nome': request.user.first_name,
+                'apelido': request.user.last_name,
+                'email': request.user.email,
+            }
+            # Tenta buscar o telefone do modelo Utilizador para pré-popular
+            try:
+                utilizador_perfil = Utilizador.objects.get(user=request.user)
+                initial_data_orcamento['telefone'] = utilizador_perfil.telefone
+            except Utilizador.DoesNotExist:
+                pass
+            except AttributeError:
+                pass # Se o atributo 'telefone' não existe em Utilizador
+
+        form = OrcamentoForm(initial=initial_data_orcamento)
+        veiculo_form = VeiculoForm() # Veículo não é pré-populado por padrão, mas você pode adicionar lógica aqui
 
     return render(request, 'automecom/orcamento.html', {
         'form': form,
         'veiculo_form': veiculo_form
     })
 
-
 @login_required
 def view_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('automecom:Home'))
-
-
 
 
 def view_login(request):
@@ -132,6 +168,24 @@ def servico_create(request):
     return render(request, 'automecom/create.html', context)
 
 
+def conselho_create(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('automecom:login'))
+
+    if not is_administrador(request.user):
+        return HttpResponseRedirect(reverse('automecom:Home'))
+
+    if request.method == 'POST':
+        form = conselhoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('automecom:Conselho'))
+    form = conselhoForm()
+
+    context = {'form': form}
+    return render(request, 'automecom/criarConselho.html', context)
+
+
 def servico_edit(request, post_id):
     if not is_administrador(request.user):
         return HttpResponseRedirect(reverse('automecom:Home'))
@@ -156,7 +210,19 @@ def servico_delete(request, post_id):
 
 
 def conselho_view(request):
-    return render(request, 'automecom/conselhos.html')
+    conselhos = Conselho.objects.all()
+    return render(request, 'automecom/conselhos.html', {
+        'conselhos': conselhos,
+        'administrador': is_administrador(request.user)
+    })
+
+@login_required
+def conselho_delete(request, post_id):
+    if Conselho.objects.filter(pk=post_id).exists():
+        Conselho.objects.get(pk=post_id).delete()
+    return HttpResponseRedirect(reverse('automecom:Conselho'))
+
+
 
 
 def contacto_view(request):
@@ -230,8 +296,6 @@ def contacto_view(request):
                 from_email="envioemailautomecom@gmail.com",
                 recipient_list=["beatrizmneves@gmail.com"],
             )
-
-            print("a bia vai passar")
             messages.success(request, "Sua mensagem foi enviada com sucesso!")
 
 
@@ -248,23 +312,33 @@ def privacidade_view(request):
     return render(request, 'automecom/privacidade.html')
 
 
-
 def obras_view(request):
+    # Verifica se o utilizador existe (boa prática)
     if not Utilizador.objects.filter(user=request.user).exists():
-        return HttpResponseRedirect(reverse('automecom:Home'))
+        messages.error(request, "Perfil de utilizador não encontrado. Por favor, contate o suporte.")
+
+    ordenar_por = request.GET.get('filtro', '-data')
 
     if is_administrador(request.user):
         marcacoes_realizadas = Marcacao.objects.filter(estado='Terminada')
     else:
-        utilizador = Utilizador.objects.get(user=request.user)
-        marcacoes_realizadas = Marcacao.objects.filter(utilizador=utilizador, estado='Terminada')
+        try:
+            utilizador = Utilizador.objects.get(user=request.user)
+            marcacoes_realizadas = Marcacao.objects.filter(utilizador=utilizador, estado='Terminada')
+        except Utilizador.DoesNotExist:
+            # Caso o utilizador não seja encontrado (mesmo após a verificação inicial, para segurança)
+            messages.error(request, "Perfil de utilizador não encontrado para filtragem. Por favor, contate o suporte.")
+            marcacoes_realizadas = Marcacao.objects.none()
+
+
+
+    marcacoes_realizadas = marcacoes_realizadas.order_by(ordenar_por)
 
     context = {
         "marcacoes": marcacoes_realizadas,
+        "ordenar_por": ordenar_por,  # Passa o valor de ordenação para o template manter a seleção
     }
     return render(request, 'automecom/obras.html', context)
-
-
 
 def sobre_view(request):
     return render(request, 'automecom/sobre.html')
@@ -278,8 +352,12 @@ def marcacoes_view(request):
 
     if is_administrador(request.user):
         marcacoes = Marcacao.objects.all().order_by('data', 'hora')
+        marcacoes = marcacoes.exclude(estado='Terminada')
+
     else:
         marcacoes = Marcacao.objects.filter(utilizador=utilizador).order_by('data', 'hora')
+        marcacoes = marcacoes.exclude(estado='Terminada')
+
     if filtro != 'todos':
         marcacoes = marcacoes.filter(estado=filtro)
 
@@ -350,6 +428,8 @@ def marcacao_view(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('automecom:login'))
 
+
+
     if request.method == 'GET':
         form = MarcacaoForm()
         form2 = VeiculoForm()
@@ -401,8 +481,8 @@ def marcacao_view(request):
                 # Adicionar os serviços à marcação
                 servicos_ids = request.POST.getlist('servicos')  # Obtém os IDs dos serviços
                 marcacao.servicos.set(servicos_ids)  # Define os serviços usando o método set()
-
             return redirect('automecom:marcacoes')
+
         else:
             return render(request, 'automecom/marcacao.html', {'form': form, 'form2': form2})
 
@@ -478,6 +558,7 @@ def orcamento_edit(request, post_id):
 
         if form.is_valid():
             form.save()
+            messages.success(request, "Orçamento editado com sucesso!")
             return HttpResponseRedirect(reverse('automecom:orcamentos'))
         else:
             # Retornar o formulário com erros se não for válido
@@ -506,9 +587,36 @@ def orcamento_delete(request, post_id):
     if Orcamento.objects.filter(pk=post_id).exists():
         Orcamento.objects.get(pk=post_id).delete()
         messages.success(request, "Orçamento apagado com sucesso!")
-
     return HttpResponseRedirect(reverse('automecom:orcamentos'))
 
+def editar_obra(request, obra_id):
+    post = get_object_or_404(Marcacao, id=obra_id)
+    # Verifica se o usuário tem permissão para editar
+    if not is_administrador(request.user) and post.utilizador.user != request.user:
+        return HttpResponseRedirect(reverse('automecom:Home'))
+    # POST: Atualizar os dados
+    if request.method == 'POST':
+        if is_administrador(request.user):
+            form = MarcacaoEditForm(request.POST, request.FILES, instance=post)
+        else:
+            form = MarcacaoEditFormClient(request.POST, request.FILES, instance=post)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "A obra foi alterada com sucesso!")
+            return HttpResponseRedirect(reverse('automecom:obras'))
+        else:
+            # Retornar o formulário com erros se não for válido
+            print(form.errors)  # Loga os erros no console
+            messages.error(request, "Erro ao salvar a obra. Por favor, corrija os erros abaixo.")
+            context = {'form': form, 'post_id': obra_id}
+            return render(request, 'automecom/editobras.html', context)
+
+    # GET: Exibir o formulário com os dados atuais
+    else:
+         form = MarcacaoEditForm(instance=post)
+
+    return render(request, 'automecom/editobras.html', {'form': form, 'obra': post})
 
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
@@ -518,4 +626,5 @@ from django.contrib import messages
 
 def marcacao(request):
     return render(request, 'automecom/marcacao.html')
+
 

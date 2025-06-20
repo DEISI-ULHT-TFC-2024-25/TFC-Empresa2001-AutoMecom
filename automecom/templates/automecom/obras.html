@@ -9,7 +9,22 @@
     {% load static %}
 </head>
 <body>
+
+
+
+<form method="get" action="" class="filter-form" style="width: 300px;">
+    <label for="filtro" style="font-weight: bold;">Filtrar por data:</label>
+    <select name="filtro" id="filtro" onchange="this.form.submit()" style="padding: 5px; margin: 10px 0;">
+       <option value="-data" {% if ordenar_por == "-data" %}selected{% endif %}>Mais Recente</option>
+            <option value="data" {% if ordenar_por == "data" %}selected{% endif %}>Mais Antiga</option>
+    </select>
+</form>
+
+
 <section>
+
+
+
     {% if marcacoes %}
         {% for marcacao in marcacoes %}
             {% if marcacao.estado == "Terminada" %}
@@ -47,8 +62,8 @@
                 </div>
             </div>
             {% if user|is_administrador %}
-                <a href="{% url 'automecom:editarmarc' marcacao.id %}" class="botao">Editar</a>
-                <a href="{% url 'automecom:apagarmarc' marcacao.id %}" class="botao">Apagar</a>
+<a href="{% url 'automecom:editar_obra' marcacao.id %}" class="botao">Editar</a>
+                <a href="{% url 'automecom:obras' %}" class="botao">Apagar</a>
             {% endif %}
             <br>
             {% endif %}

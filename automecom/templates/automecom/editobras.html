@@ -1,0 +1,23 @@
+{% extends 'automecom/layout.html' %}
+{% block main %}
+{% block content %}
+<section class="form-container">
+
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="POST" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{% url 'automecom:obras'  %}" class="btn btn-secondary">Cancelar</a>
+</form>
+    </section>
+
+{% endblock content %}
+{% endblock main %}

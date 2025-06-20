@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, time
 from datetime import datetime, timedelta
 
 from django import forms
@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
-from .models import Servico, Utilizador, Veiculo, Marcacao, TipoServico, Orcamento
+from .models import Servico, Utilizador, Veiculo, Marcacao, TipoServico, Orcamento, Obra, Conselho
 
 
 class ServicoForm(forms.ModelForm):
@@ -15,20 +15,30 @@ class ServicoForm(forms.ModelForm):
         model = Servico
         fields = ['tipo', 'nome', 'descricao']
 
-
 class TipoServicoForm(forms.ModelForm):
     class Meta:
         model = TipoServico
         fields = ['nome']
 
 
+class conselhoForm(forms.ModelForm):
+    class Meta:
+        model = Conselho
+        fields = ['titulo', 'descricao']
+
+
 class RegisterForm(UserCreationForm):
     telefone = forms.CharField(max_length=15, required=True,
                                widget=forms.TextInput(attrs={'placeholder': 'Número de Telefone'}))
 
+    contribuinte = forms.CharField(
+        max_length=20,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Número de Contribuinte'})
+    )
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'telefone', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'telefone', 'contribuinte', 'email', 'password1', 'password2']
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
@@ -100,8 +110,12 @@ class VeiculoForm(forms.ModelForm):
             'ano': forms.Select(
                 attrs={'class': 'form-control', 'placeholder': 'Selecione o ano do veículo', 'style': 'width: 100px;'},
                 choices=[(year, year) for year in range(datetime.now().year, 1980, -1)]),
-            'kms': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite a quilometragem (kms)',
-                                          'style': 'width: 100px;'}),
+            'kms': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Apenas números.',
+                'style': 'width: 150px;',
+
+            }),
         }
 
 
@@ -178,22 +192,31 @@ class MarcacaoForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(MarcacaoForm, self).__init__(*args, **kwargs)
 
-        # Gerar horários com incrementos de 10 minutos
         horarios = []
-        inicio = datetime.strptime("08:00", "%H:%M")  # Hora inicial (exemplo: 08:00)
-        fim = datetime.strptime("18:00", "%H:%M")  # Hora final (exemplo: 18:00)
+        inicio = time(9, 0)
+        fim = time(18, 0)
+        pausa_inicio = time(13, 0)
+        pausa_fim = time(14, 0)
 
-        while inicio <= fim:
-            horarios.append(inicio.strftime("%H:%M"))
-            inicio += timedelta(minutes=10)
+        atual = datetime.combine(datetime.today(), inicio)
+        fim_dt = datetime.combine(datetime.today(), fim)
 
-        # Adicionar os horários gerados ao campo de hora
+        while atual.time() <= fim:
+            if not (pausa_inicio <= atual.time() < pausa_fim):
+                horarios.append(atual.strftime("%H:%M"))
+            atual += timedelta(minutes=10)
+
         self.fields['hora'].choices = [(hora, hora) for hora in horarios]
 
-    def clean_data(self):
+    def clean_data_marcacao(self):
         data = self.cleaned_data.get("data")
-        if data and data < date.today():
-            raise forms.ValidationError("A data não pode ser anterior à data atual.")
+        print(f"Validando data: {data}")  # Adicionado para debug
+
+        if data:
+            if data < date.today():
+                raise forms.ValidationError("A data não pode ser anterior à data atual.")
+            if data.weekday() >= 5:
+                raise forms.ValidationError("Marcação não permitida para fins de semana.")
         return data
 
     def clean_hora(self):
@@ -222,9 +245,8 @@ class MarcacaoEditForm(forms.ModelForm):
 
 class OrcamentoEditForm(forms.ModelForm):
     class Meta:
-        model = Marcacao
-        fields = ['nome', 'apelido', 'email', 'servicos', 'data', 'descricao', 'hora',
-                  'observacoes']
+        model = Orcamento
+        fields = ['nome', 'apelido', 'email', 'servicos', 'descricao', 'arquivo_pdf']
 
 
 class MarcacaoEditFormClient(forms.ModelForm):
@@ -234,7 +256,7 @@ class MarcacaoEditFormClient(forms.ModelForm):
 
 class OrcamentoEditFormClient(forms.ModelForm):
     class Meta:
-        model = Marcacao
+        model = Orcamento
         fields = ['nome', 'apelido', 'email', 'servicos', 'descricao']
 
 class OrcamentoForm(forms.ModelForm):
@@ -242,6 +264,11 @@ class OrcamentoForm(forms.ModelForm):
         max_length=200,
         required=True,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o seu primeiro nome'})
+    )
+    apelido = forms.CharField(
+        max_length=200,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o seu apelido'})
     )
     email = forms.EmailField(
         max_length=200,
@@ -269,6 +296,11 @@ class OrcamentoForm(forms.ModelForm):
     )
 
 
+
     class Meta:
         model = Orcamento  # Especifica o modelo associado
-        fields = ['nome', 'email', 'descricao', 'servicos','arquivo_pdf']
+        fields = ['nome', 'apelido', 'email', 'descricao', 'servicos']
+class ObraEditForm(forms.ModelForm):
+    class Meta:
+        model = Obra
+        fields = ['nome', 'apelido', 'email', 'servicos', 'data', 'descricao', 'hora', 'observacoes', 'fatura']

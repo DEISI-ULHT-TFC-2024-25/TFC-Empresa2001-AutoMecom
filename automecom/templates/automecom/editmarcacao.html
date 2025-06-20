@@ -28,6 +28,16 @@
 
         <div class="form-row">
             <div class="form-group">
+                {{ form.data.label_tag }}
+                {{ form.data }}
+            </div>
+            <div class="form-group">
+                {{ form.hora.label_tag }}
+                {{ form.hora }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
                 {{ form.servicos.label_tag }}
                 {{ form.servicos }}
             </div>
@@ -46,17 +56,6 @@
 
         <div class="form-row">
             <div class="form-group">
-                {{ form.data.label_tag }}
-                {{ form.data }}
-            </div>
-            <div class="form-group">
-                {{ form.hora.label_tag }}
-                {{ form.hora }}
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
                 {{ form.descricao.label_tag }}
                 {{ form.descricao }}
             </div>
@@ -65,6 +64,10 @@
             <div class="form-group">
                 {{ form.estado.label_tag }}
                 {{ form.estado }}
+            </div>
+               <div class="form-group">
+                {{ form.orcamento.label_tag }}
+                {{ form.orcamento }}
             </div>
             <div class="form-group">
                 {{ form.observacoes.label_tag }}
