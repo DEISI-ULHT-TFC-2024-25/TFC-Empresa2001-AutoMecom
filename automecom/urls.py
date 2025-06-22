@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import alterar_estado_marcacao
 from django.conf import settings
@@ -26,7 +26,6 @@ urlpatterns = [
     path('marcacoes', views.marcacoes_view, name="marcacoes"),
     path('orcamento', views.pedido_orcamento, name='orcamento'),
     path('orcamentos', views.listar_orcamentos, name='orcamentos'),
-    # path('marcacao/', views.marcacao_view, name='Marcação'),
     path('editmarc/<int:post_id>', views.marcacao_edit, name='editarmarc'),
     path('editorca/<int:post_id>', views.orcamento_edit, name='editarorca'),
     path('deletemarc/<int:post_id>', views.marcacao_delete, name='apagarmarc'),
@@ -37,22 +36,9 @@ urlpatterns = [
     path('privacidade.html', views.privacidade_view, name='privacidade'),
     path('obras.html', views.obras_view, name='obras'),
     path('servicos/', views.servico_view, name='servicos'),
-    path('login/conselhos', views.conselho_view, name="Conselho"),
-    path('login/contactos', views.contacto_view, name="Contacto"),
-    path('login/sobre', views.sobre_view, name="Sobre"),
-    path('login/marcacao', views.marcacao_view, name="Marcação"),
-    path('login/home', views.home_view, name="Home"),
-    path('login/marcacoes', views.marcacoes_view, name="marcacoes"),
-    path('login/servicos', views.servico_view, name='servicos'),
-    path('login/obras.html', views.obras_view, name='obras'),
-    path('login/logout', views.view_logout, name='logout'),
-    path('login/orcamento', views.pedido_orcamento, name='orcamento'),
-    path('login/registro', views.register_view, name='register'),
-    path('login/orcamentos', views.listar_orcamentos, name='orcamentos'),
-    path('login/perfil', views.perfil_view, name="perfil"),
-    path('login/privacidade.html', views.privacidade_view, name='privacidade'),
-    path('login/garantia.html', views.garantia_view, name='garantia'),
+
+
 
 ]
 
-urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

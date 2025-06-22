@@ -22,6 +22,10 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('automecom.urls')),
+    path('editmarc/', include('automecom.urls')),
+    path('login/', include('automecom.urls')),
+    path('editorca/', include('automecom.urls')),
+    path('editobras/', include('automecom.urls')),
 
 ]
 
