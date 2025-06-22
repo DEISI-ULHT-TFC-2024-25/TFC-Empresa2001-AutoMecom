@@ -14,7 +14,70 @@
 <form method="POST" >
     {% csrf_token %}
 
-    {{ form.as_p }}
+     <div class="form-row">
+            <div class="form-group">
+                {{ form.nome.label_tag }}
+                {{ form.nome }}
+            </div>
+            <div class="form-group">
+                {{ form.apelido.label_tag }}
+                {{ form.apelido }}
+            </div>
+     </div>
+
+    <div class="form-row">
+            <div class="form-group">
+                {{ form.data.label_tag }}
+                {{ form.data }}
+            </div>
+            <div class="form-group">
+                {{ form.hora.label_tag }}
+                {{ form.hora }}
+            </div>
+     </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+             <div class="form-group">
+                {{ form.estado.label_tag }}
+                {{ form.estado }}
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.servicos.label_tag }}
+                {{ form.servicos }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.descricao.label_tag }}
+                {{ form.descricao }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.observacoes.label_tag }}
+                {{ form.observacoes }}
+            </div>
+        </div>
+
+         <p><strong>Anexar PDF:</strong>
+        {% if form.arquivo_pdf %}
+            <input type="file" name="arquivo_pdf" />
+        {% else %}
+            <input type="file" name="arquivo_pdf" />
+        {% endif %}
+    </p>
+
+
     <button type="submit" class="btn btn-primary">Salvar</button>
     <a href="{% url 'automecom:obras'  %}" class="btn btn-secondary">Cancelar</a>
 </form>
