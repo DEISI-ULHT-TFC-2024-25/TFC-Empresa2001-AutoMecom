@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-q1fh-r_1)4rs!*$he82)-=h09xuhd8hdv*dl1suae!3idtac!*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["automecom.com", "www.automecom.com"]
+ALLOWED_HOSTS = ["automecom.com", "www.automecom.com", "127.0.0.1"]
 
 # Application definition
 
@@ -111,7 +111,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
