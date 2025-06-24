@@ -259,7 +259,7 @@ def contacto_view(request):
                 subject=f"Nova mensagem de {primeiro_nome} {ultimo_nome}",
                 message=corpo_email,
                 from_email="envioemailautomecom@gmail.com",
-                recipient_list=["beatrizmneves@gmail.com"],
+                recipient_list=["geral@automecom.com"],
             )
 
             print("a bia vai passar")
