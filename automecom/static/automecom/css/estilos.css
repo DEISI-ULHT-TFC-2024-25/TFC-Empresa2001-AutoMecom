@@ -702,7 +702,7 @@ font-size: 20px;
     }
 
     .cabeçalho1{
-    background-image:url('{{ STATIC_URL }}images/invernocarro.jpg');
+    background-image:url('../images/invernocarro.jpg');
     background-size: cover;
     background-position: center;
     height: 45vh;
@@ -713,7 +713,7 @@ font-size: 20px;
     }
 
     .cabeçalho2{
-    background-image:url('{{ STATIC_URL }}images/bomba.jpg');
+    background-image:url('../images/bomba.jpg');
     background-size: cover;
     background-position: center;
     height: 40vh;
@@ -724,7 +724,7 @@ font-size: 20px;
     }
 
     .cabeçalho3{
-    background-image:url('{{ STATIC_URL }}images/viagemcarro.jpg');
+    background-image:url('../images/viagemcarro.jpg');
     background-size: cover;
     background-position: center;
     height: 40vh;
@@ -736,7 +736,7 @@ font-size: 20px;
 
 
     .cabeçalho4{
-    background-image:url('{{ STATIC_URL }}images/oleoo.jpg');
+    background-image:url('../images/oleoo.jpg');
     background-size: cover;
     background-position: center;
     height: 40vh;
@@ -747,7 +747,7 @@ font-size: 20px;
     }
 
     .cabeçalho5{
-    background-image:url('{{ STATIC_URL }}images/cliente.jpg');
+    background-image:url('../images/cliente.jpg');
     background-size: cover;
     background-position: center;
     height: 40vh;
@@ -758,7 +758,7 @@ font-size: 20px;
     }
 
     .cabeçalho6{
-    background-image:url('{{ STATIC_URL }}images/agendamento.png');
+    background-image:url('../images/agendamento.png');
     background-size: cover;
     background-position: center;
     height: 40vh;
@@ -769,7 +769,7 @@ font-size: 20px;
     }
 
     .cabeçalho7{
-    background-image:url('{{ STATIC_URL }}images/foraauto.jpg');
+    background-image:url('../images/foraauto.jpg');
     background-size: cover;
     background-position: center;
     height: 45vh;
@@ -780,7 +780,7 @@ font-size: 20px;
     }
 
     .cabeçalho8{
-    background-image:url('{{ STATIC_URL }}images/pintura.jpg');
+    background-image:url('../images/pintura.jpg');
     background-size: cover;
     background-position: center;
     height: 45vh;
@@ -791,7 +791,7 @@ font-size: 20px;
     }
 
     .cabeçalho9{
-    background-image:url('{{ STATIC_URL }}images/instala.jpg');
+    background-image:url('../images/instala.jpg');
     background-size: cover;
     background-position: center;
     height: 45vh;
@@ -802,7 +802,7 @@ font-size: 20px;
     }
 
     .cabeçalho10{
-    background-image:url('{{ STATIC_URL }}images/oficina2.jpg');
+    background-image:url('../images/oficina2.jpg');
     background-size: cover;
     background-position: center;
     height: 45vh;
@@ -841,7 +841,7 @@ font-size: 20px;
     }
 
     .cabeçalho{
-    background-image: url('{{ STATIC_URL }}images/servico.png');
+    background-image: url('../images/servico.png');
     background-size: cover;
     background-position: center;
     height: 30vh;
