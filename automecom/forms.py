@@ -162,7 +162,8 @@ class MarcacaoForm(forms.Form):
     servicos = forms.MultipleChoiceField(
         choices=[(servico.id, servico.nome) for servico in Servico.objects.all()],
         required=True,
-        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'size': '5'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'size': '5',
+                                           'style': 'height: 150px; overflow-y: auto;'}),
     )
 
     descricao = forms.CharField(
@@ -286,7 +287,8 @@ class OrcamentoForm(forms.ModelForm):
     servicos = forms.ModelMultipleChoiceField(
         queryset=Servico.objects.all(),
         required=True,
-        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'size': '5'})
+        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'size': '5',
+                                           'style': 'height: 150px; overflow-y: auto;'})
     )
     descricao = forms.CharField(
         label="Descrição",
@@ -300,6 +302,7 @@ class OrcamentoForm(forms.ModelForm):
     class Meta:
         model = Orcamento  # Especifica o modelo associado
         fields = ['nome', 'apelido', 'email', 'descricao', 'servicos']
+
 class ObraEditForm(forms.ModelForm):
     class Meta:
         model = Obra
