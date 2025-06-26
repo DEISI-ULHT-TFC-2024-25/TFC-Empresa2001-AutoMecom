@@ -48,6 +48,7 @@
         Travões<br>
         Estado da Bateria</p>
     </div>
+    {% if administrador %}
     {% for conselho in conselhos %}
         <div class="textoM">
             <h2>{{ conselho.titulo }}</h2>
@@ -56,7 +57,7 @@
 
         </div>
         {% endfor %}
-    {% if administrador %}
+
         <p style="text-align: center"><a href="{% url 'automecom:CreateConselho' %}" class="botao">+ Adicionar Conselho</a></p>
     {% endif %}
 </body>
