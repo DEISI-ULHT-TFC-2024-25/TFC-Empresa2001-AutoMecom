@@ -1553,7 +1553,13 @@ body, html {
       .subnav-content a:hover {
       background-color: #0A142FFF;
       color: lightgray;
+      display: none; /* Começa oculto */
+
       }
+
+subnav:hover .subnav-content {
+        display: block;
+    }
 
 
 
@@ -1578,10 +1584,6 @@ body, html {
          margin:auto;
       }
 
-      .subnav-content {
-        display: block; /* Ajuste para melhor visualização em dispositivos móveis */
-        margin-top: 10px;
-    }
 
 
     .container {
