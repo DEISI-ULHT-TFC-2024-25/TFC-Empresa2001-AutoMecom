@@ -1512,17 +1512,18 @@ body, html {
 
       /* Oculta o menu principal inicialmente */
       .menu-links {
-      display: none; /* Oculta o menu inicialmente */
+      display: none;
       flex-direction: column;
       background-color: white;
       position: absolute;
-      margin-top:680px;
-      height:600px;
-      width:300px;
+       top: 100%;
+      height:auto;
+      width: 100%; / Ocupa toda a largura do pai /
+    max-width: 300px;
       right:0;
       padding: 10px 10px;
       border-radius: 8px;
-      box-shadow: 0 4px 4px  rgb(10, 20, 47); /* Sombra ao redor do menu */
+      box-shadow: 0 4px 4px  rgb(10, 20, 47); / Sombra ao redor do menu */
       }
 
       .menu-checkbox:checked ~ .menu-links {
@@ -1678,6 +1679,7 @@ width:100%;
     }
 
 
+
     .marca-modelo-container .form-control{
        margin-left:-10px;
        width:50px;
@@ -1777,7 +1779,6 @@ width:100%;
 
 
 }
-
 
 
 
